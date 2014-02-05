@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+
+              <field name="id" type="text" default="0" label="COM_PEDIGREE_FORM_LBL_OWNER_ID"
+            readonly="true" class="readonly"
+            description="JGLOBAL_FIELD_ID_DESC" /> 
+
+       <field name="id_person" type="sql" class="inputbox"
+        
+            label="COM_PEDIGREE_FORM_LBL_OWNER_ID_PERSON"
+            description="COM_PEDIGREE_FORM_DESC_OWNER_ID_PERSON" 
+        
+        
+        
+         required="true" 
+        query="SELECT 0 AS `id`, '- Please select -' AS `last_name` UNION SELECT `id`, `last_name` FROM `#__pedigree_people`" key_field="id" value_field="last_name"
+         /> 
+
+       <field name="id_dog" type="sql" class="inputbox"
+        
+            label="COM_PEDIGREE_FORM_LBL_OWNER_ID_DOG"
+            description="COM_PEDIGREE_FORM_DESC_OWNER_ID_DOG" 
+        
+        
+        
+         required="true" 
+        query="SELECT 0 AS `id`, '- Please select -' AS `name` UNION SELECT `id`, `name` FROM `#__pedigree_dogs`" key_field="id" value_field="name"
+         /> 
+
+       <field name="is_primary" type="text" size="40" class="inputbox"
+        
+            label="COM_PEDIGREE_FORM_LBL_OWNER_IS_PRIMARY"
+            description="COM_PEDIGREE_FORM_DESC_OWNER_IS_PRIMARY" 
+         default="1" 
+        
+         required="true" 
+        filter="safehtml" /> 
+
+       <field name="date_start" type="calendar"
+                
+            label="COM_PEDIGREE_FORM_LBL_OWNER_DATE_START"
+            description="COM_PEDIGREE_FORM_DESC_OWNER_DATE_START" 
+                
+                
+                 /> 
+
+       <field name="date_end" type="calendar"
+                
+            label="COM_PEDIGREE_FORM_LBL_OWNER_DATE_END"
+            description="COM_PEDIGREE_FORM_DESC_OWNER_DATE_END" 
+                
+                
+                 /> 
+
+       <field name="created_by" type="createdby" default="" 
+            label="COM_PEDIGREE_FORM_LBL_OWNER_CREATED_BY"
+            description="COM_PEDIGREE_FORM_DESC_OWNER_CREATED_BY"  /> 
+
+         <field
+        name="state"
+        type="list"
+        label="JSTATUS"
+        description="JFIELD_PUBLISHED_DESC"
+        class="inputbox"
+        size="1"
+        default="1">
+        <option value="1">JPUBLISHED</option>
+        <option value="0">JUNPUBLISHED</option>
+    </field> 
+
+                        <field name="checked_out" type="hidden" filter="unset" />
+        <field name="checked_out_time" type="hidden" filter="unset" /> 
+
+ </fieldset> 
+
+ <fieldset 
+                        name="accesscontrol">
+                       <field name="asset_id" type="hidden" filter="unset" />
+                       <field name="rules"
+                            type="rules"
+                            label="JFIELD_RULES_LABEL"
+                            translate_label="false"
+                            filter="rules"
+                            validate="rules"
+                            class="inputbox"
+                            component="com_pedigree"
+                            section="owner"
+                        />
+
+	</fieldset>
+
+</form>

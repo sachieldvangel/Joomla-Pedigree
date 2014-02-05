@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+
+              <field name="id" type="text" default="0" label="COM_PEDIGREE_FORM_LBL_COUNTRY_ID"
+            readonly="true" class="readonly"
+            description="JGLOBAL_FIELD_ID_DESC" /> 
+
+       <field name="short_name" type="text"
+                
+            label="COM_PEDIGREE_FORM_LBL_COUNTRY_SHORT_NAME"
+            description="COM_PEDIGREE_FORM_DESC_COUNTRY_SHORT_NAME" 
+                
+                
+                 required="true" 
+            menu_published="0"
+            filter="string" /> 
+
+       <field name="long_name" type="text"
+                
+            label="COM_PEDIGREE_FORM_LBL_COUNTRY_LONG_NAME"
+            description="COM_PEDIGREE_FORM_DESC_COUNTRY_LONG_NAME" 
+                
+                
+                 required="true" 
+            menu_published="0"
+            filter="string" /> 
+
+       <field name="iso2" type="text" size="40" class="inputbox"
+        
+            label="COM_PEDIGREE_FORM_LBL_COUNTRY_ISO2"
+            description="COM_PEDIGREE_FORM_DESC_COUNTRY_ISO2" 
+        
+        
+         required="true" 
+        filter="safehtml" /> 
+
+       <field name="iso3" type="text" size="40" class="inputbox"
+        
+            label="COM_PEDIGREE_FORM_LBL_COUNTRY_ISO3"
+            description="COM_PEDIGREE_FORM_DESC_COUNTRY_ISO3" 
+        
+        
+         required="true" 
+        filter="safehtml" /> 
+
+       <field name="numcode" type="text"
+                
+            label="COM_PEDIGREE_FORM_LBL_COUNTRY_NUMCODE"
+            description="COM_PEDIGREE_FORM_DESC_COUNTRY_NUMCODE" 
+                
+                
+                 required="true" 
+            menu_published="0"
+            filter="string" /> 
+
+       <field name="un_member" type="list"
+                
+            label="COM_PEDIGREE_FORM_LBL_COUNTRY_UN_MEMBER"
+            description="COM_PEDIGREE_FORM_DESC_COUNTRY_UN_MEMBER" 
+                 default="no" 
+                
+                >
+                <option value="yes">yes</option>
+                <option value="no">no</option>
+        </field> 
+
+       <field name="calling_code" type="text"
+                
+            label="COM_PEDIGREE_FORM_LBL_COUNTRY_CALLING_CODE"
+            description="COM_PEDIGREE_FORM_DESC_COUNTRY_CALLING_CODE" 
+                
+                
+                
+            menu_published="0"
+            filter="string" /> 
+
+       <field name="cctld" type="text"
+                
+            label="COM_PEDIGREE_FORM_LBL_COUNTRY_CCTLD"
+            description="COM_PEDIGREE_FORM_DESC_COUNTRY_CCTLD" 
+                
+                
+                
+            menu_published="0"
+            filter="string" /> 
+
+       <field name="created_by" type="createdby" default="" 
+            label="COM_PEDIGREE_FORM_LBL_COUNTRY_CREATED_BY"
+            description="COM_PEDIGREE_FORM_DESC_COUNTRY_CREATED_BY"  /> 
+
+         <field
+        name="state"
+        type="list"
+        label="JSTATUS"
+        description="JFIELD_PUBLISHED_DESC"
+        class="inputbox"
+        size="1"
+        default="1">
+        <option value="1">JPUBLISHED</option>
+        <option value="0">JUNPUBLISHED</option>
+    </field> 
+
+                        <field name="checked_out" type="hidden" filter="unset" />
+        <field name="checked_out_time" type="hidden" filter="unset" />
+
+	</fieldset>
+
+</form>

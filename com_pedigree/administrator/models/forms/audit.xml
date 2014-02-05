@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+
+              <field name="id" type="text" default="0" label="COM_PEDIGREE_FORM_LBL_AUDIT_ID"
+            readonly="true" class="readonly"
+            description="JGLOBAL_FIELD_ID_DESC" /> 
+
+       <field name="user_id" type="createdby" default="" 
+            label="COM_PEDIGREE_FORM_LBL_AUDIT_USER_ID"
+            description="COM_PEDIGREE_FORM_DESC_AUDIT_USER_ID"  /> 
+
+       <field name="user_ip" type="text"
+                
+            label="COM_PEDIGREE_FORM_LBL_AUDIT_USER_IP"
+            description="COM_PEDIGREE_FORM_DESC_AUDIT_USER_IP" 
+                
+                
+                 required="true" 
+            menu_published="0"
+            readonly="true"
+            filter="cmd"
+            maxlength="15" /> 
+
+ <field id="operation_type" name="operation_type" type="list"
+        class="inputbox"
+        
+            label="COM_PEDIGREE_FORM_LBL_AUDIT_OPERATION_TYPE"
+            description="COM_PEDIGREE_FORM_DESC_AUDIT_OPERATION_TYPE" 
+         default="Update" 
+        
+         required="true" >
+			<option value="Insert">Insert</option>
+			<option value="Update">Update</option>
+			<option value="Deleted">Deleted</option>
+			<option value="Unknown">Unknown</option>
+		</field> 
+
+       <field name="operation_table" type="text"
+                
+            label="COM_PEDIGREE_FORM_LBL_AUDIT_OPERATION_TABLE"
+            description="COM_PEDIGREE_FORM_DESC_AUDIT_OPERATION_TABLE" 
+                
+                
+                 required="true" 
+            menu_published="0"
+            readonly="true"
+            filter="string" /> 
+
+       <field name="operation_field" type="text"
+                
+            label="COM_PEDIGREE_FORM_LBL_AUDIT_OPERATION_FIELD"
+            description="COM_PEDIGREE_FORM_DESC_AUDIT_OPERATION_FIELD" 
+                
+                
+                 required="true" 
+            menu_published="0"
+            filter="string" /> 
+
+       <field name="operation_id" type="text" size="40" class="inputbox"
+        
+            label="COM_PEDIGREE_FORM_LBL_AUDIT_OPERATION_ID"
+            description="COM_PEDIGREE_FORM_DESC_AUDIT_OPERATION_ID" 
+        
+        
+         required="true" 
+        filter="safehtml" /> 
+
+       <field name="operation_time" type="text" size="40" class="inputbox"
+        
+            label="COM_PEDIGREE_FORM_LBL_AUDIT_OPERATION_TIME"
+            description="COM_PEDIGREE_FORM_DESC_AUDIT_OPERATION_TIME" 
+         default="CURRENT_TIMESTAMP" 
+        
+         required="true" 
+        filter="safehtml" /> 
+
+       <field name="operation_olddata" type="text"
+                
+            label="COM_PEDIGREE_FORM_LBL_AUDIT_OPERATION_OLDDATA"
+            description="COM_PEDIGREE_FORM_DESC_AUDIT_OPERATION_OLDDATA" 
+                
+                
+                
+            menu_published="0"
+            readonly="true"
+            filter="string"
+            maxlength="1024" /> 
+
+       <field name="operation_newdata" type="text"
+                
+            label="COM_PEDIGREE_FORM_LBL_AUDIT_OPERATION_NEWDATA"
+            description="COM_PEDIGREE_FORM_DESC_AUDIT_OPERATION_NEWDATA" 
+                
+                
+                
+            menu_published="0"
+            readonly="true"
+            filter="string"
+            maxlength="1024" /> 
+
+       <field name="created_by" type="createdby" default="" 
+            label="COM_PEDIGREE_FORM_LBL_AUDIT_CREATED_BY"
+            description="COM_PEDIGREE_FORM_DESC_AUDIT_CREATED_BY"  /> 
+
+         <field
+        name="state"
+        type="list"
+        label="JSTATUS"
+        description="JFIELD_PUBLISHED_DESC"
+        class="inputbox"
+        size="1"
+        default="0">
+        <option value="1">JPUBLISHED</option>
+        <option value="0">JUNPUBLISHED</option>
+    </field> 
+
+                        <field name="checked_out" type="hidden" filter="unset" />
+        <field name="checked_out_time" type="hidden" filter="unset" />
+
+	</fieldset>
+
+</form>

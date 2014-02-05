@@ -1,0 +1,12 @@
+DROP TABLE IF EXISTS `#__pedigree_audits`;
+DROP TABLE IF EXISTS `#__pedigree_breeders`;
+DROP TABLE IF EXISTS `#__pedigree_colors`;
+DROP TABLE IF EXISTS `#__pedigree_countries`;
+DROP TABLE IF EXISTS `#__pedigree_dogs`;
+DROP TABLE IF EXISTS `#__pedigree_dogs_delegation`;
+DROP TABLE IF EXISTS `#__pedigree_judging`;
+DROP TABLE IF EXISTS `#__pedigree_owners`;
+DROP TABLE IF EXISTS `#__pedigree_patterns`;
+DROP TABLE IF EXISTS `#__pedigree_people`;
+DROP TABLE IF EXISTS `#__pedigree_people_delegation`;
+DROP TABLE IF EXISTS `#__pedigree_registrations`;

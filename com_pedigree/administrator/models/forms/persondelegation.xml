@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+
+              <field name="id" type="text" default="0" label="COM_PEDIGREE_FORM_LBL_PERSONDELEGATION_ID"
+            readonly="true" class="readonly"
+            description="JGLOBAL_FIELD_ID_DESC" /> 
+
+       <field name="id_person" type="sql" class="inputbox"
+        
+            label="COM_PEDIGREE_FORM_LBL_PERSONDELEGATION_ID_PERSON"
+            description="COM_PEDIGREE_FORM_DESC_PERSONDELEGATION_ID_PERSON" 
+        
+        
+        
+         required="true" 
+        query="SELECT '' AS `id`, '- Select Person -' AS `last_name` UNION SELECT `id`, `last_name` FROM `#__pedigree_people`" key_field="id" value_field="last_name"
+         /> 
+
+       <field name="id_user" type="user"
+                
+            label="COM_PEDIGREE_FORM_LBL_PERSONDELEGATION_ID_USER"
+            description="COM_PEDIGREE_FORM_DESC_PERSONDELEGATION_ID_USER" 
+                
+                
+                 required="true"  /> 
+
+       <field name="created_by" type="createdby" default="" 
+            label="COM_PEDIGREE_FORM_LBL_PERSONDELEGATION_CREATED_BY"
+            description="COM_PEDIGREE_FORM_DESC_PERSONDELEGATION_CREATED_BY"  /> 
+
+         <field
+        name="state"
+        type="list"
+        label="JSTATUS"
+        description="JFIELD_PUBLISHED_DESC"
+        class="inputbox"
+        size="1"
+        default="1">
+        <option value="1">JPUBLISHED</option>
+        <option value="0">JUNPUBLISHED</option>
+    </field> 
+
+                        <field name="checked_out" type="hidden" filter="unset" />
+        <field name="checked_out_time" type="hidden" filter="unset" />
+
+	</fieldset>
+
+</form>

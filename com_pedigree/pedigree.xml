@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.0" method="upgrade">
+    <name>com_pedigree</name>
+    <creationDate>2014-02-05</creationDate>
+    <copyright>Copyright (C) 2014. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <author>Eddie Kominek</author>
+    <authorEmail>eddie@kominekafghans.com</authorEmail>
+    <authorUrl>http://www.kominekafghans.com/</authorUrl>
+    <version>1.0.2</version>
+    <description></description>
+    
+    <install> <!-- Runs on install -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+    <uninstall> <!-- Runs on uninstall -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+
+    <files folder="site">
+        <filename>index.html</filename>
+        <filename>pedigree.php</filename>
+        <filename>controller.php</filename>
+        <filename>router.php</filename>
+        <folder>views</folder>
+        <folder>models</folder>
+        <folder>controllers</folder>
+        <folder>helpers</folder>
+    </files>
+    <languages folder="site">
+        
+			<language tag="en-GB">language/en-GB.com_pedigree.ini</language>
+    </languages>
+    <administration>
+        <menu img="components/com_pedigree/assets/images/s_com_pedigree.png" >COM_PEDIGREE</menu>
+        <submenu>
+            
+			<menu link="option=com_pedigree&amp;view=audits" view="audits" img="components/com_pedigree/assets/images/s_audits.png" alt="Pedigree/Audits">COM_PEDIGREE_TITLE_AUDITS</menu>
+
+			<menu link="option=com_pedigree&amp;view=breeders" view="breeders" img="components/com_pedigree/assets/images/s_breeders.png" alt="Pedigree/Breeders">COM_PEDIGREE_TITLE_BREEDERS</menu>
+
+			<menu link="option=com_pedigree&amp;view=colors" view="colors" img="components/com_pedigree/assets/images/s_colors.png" alt="Pedigree/Colors">COM_PEDIGREE_TITLE_COLORS</menu>
+
+			<menu link="option=com_pedigree&amp;view=countries" view="countries" img="components/com_pedigree/assets/images/s_countries.png" alt="Pedigree/Countries">COM_PEDIGREE_TITLE_COUNTRIES</menu>
+
+			<menu link="option=com_pedigree&amp;view=dogs" view="dogs" img="components/com_pedigree/assets/images/s_dogs.png" alt="Pedigree/Dogs">COM_PEDIGREE_TITLE_DOGS</menu>
+
+			<menu link="option=com_pedigree&amp;view=delegations" view="delegations" img="components/com_pedigree/assets/images/s_delegations.png" alt="Pedigree/Delegations">COM_PEDIGREE_TITLE_DELEGATIONS</menu>
+
+			<menu link="option=com_pedigree&amp;view=judgings" view="judgings" img="components/com_pedigree/assets/images/s_judgings.png" alt="Pedigree/Judgings">COM_PEDIGREE_TITLE_JUDGINGS</menu>
+
+			<menu link="option=com_pedigree&amp;view=owners" view="owners" img="components/com_pedigree/assets/images/s_owners.png" alt="Pedigree/Owners">COM_PEDIGREE_TITLE_OWNERS</menu>
+
+			<menu link="option=com_pedigree&amp;view=patterns" view="patterns" img="components/com_pedigree/assets/images/s_patterns.png" alt="Pedigree/Patterns">COM_PEDIGREE_TITLE_PATTERNS</menu>
+
+			<menu link="option=com_pedigree&amp;view=peoples" view="peoples" img="components/com_pedigree/assets/images/s_peoples.png" alt="Pedigree/Peoples">COM_PEDIGREE_TITLE_PEOPLES</menu>
+
+			<menu link="option=com_pedigree&amp;view=persondelegations" view="persondelegations" img="components/com_pedigree/assets/images/s_persondelegations.png" alt="Pedigree/Persondelegations">COM_PEDIGREE_TITLE_PERSONDELEGATIONS</menu>
+
+			<menu link="option=com_pedigree&amp;view=registrations" view="registrations" img="components/com_pedigree/assets/images/s_registrations.png" alt="Pedigree/Registrations">COM_PEDIGREE_TITLE_REGISTRATIONS</menu>
+
+        </submenu>
+        <files folder="administrator">
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
+            <filename>controller.php</filename>
+            <filename>index.html</filename>
+            <filename>pedigree.php</filename>
+            <folder>controllers</folder>
+            <folder>assets</folder>
+            <folder>helpers</folder>
+            <folder>models</folder>
+            <folder>sql</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
+        </files>
+        <languages folder="administrator">
+            
+			<language tag="en-GB">language/en-GB.com_pedigree.ini</language>
+			<language tag="en-GB">language/en-GB.com_pedigree.sys.ini</language>
+        </languages>
+    </administration>
+</extension>
+<!-- Component built by the Joomla Component Creator -->
+<!-- http://www.notwebdesign.com/joomla-component-creator/ -->
