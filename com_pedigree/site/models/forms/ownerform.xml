@@ -6,27 +6,13 @@
             readonly="true" class="readonly"
             description="JGLOBAL_FIELD_ID_DESC" /> 
 
-       <field name="id_person" type="sql" class="inputbox"
-        
+ <field name="id_person" type="foreignkey" class="inputbox"
             label="COM_PEDIGREE_FORM_LBL_OWNER_ID_PERSON"
-            description="COM_PEDIGREE_FORM_DESC_OWNER_ID_PERSON" 
-        
-        
-        
-         required="true" 
-        query="SELECT 0 AS `id`, '- Please select -' AS `last_name` UNION SELECT `id`, `last_name` FROM `#__pedigree_people`" key_field="id" value_field="last_name"
-         /> 
+            description="COM_PEDIGREE_FORM_DESC_OWNER_ID_PERSON" input_type="list" table="#__pedigree_people" key_field="id" value_field="last_name"  required="true"  /> 
 
-       <field name="id_dog" type="sql" class="inputbox"
-        
+ <field name="id_dog" type="foreignkey" class="inputbox"
             label="COM_PEDIGREE_FORM_LBL_OWNER_ID_DOG"
-            description="COM_PEDIGREE_FORM_DESC_OWNER_ID_DOG" 
-        
-        
-        
-         required="true" 
-        query="SELECT 0 AS `id`, '- Please select -' AS `name` UNION SELECT `id`, `name` FROM `#__pedigree_dogs`" key_field="id" value_field="name"
-         /> 
+            description="COM_PEDIGREE_FORM_DESC_OWNER_ID_DOG" input_type="list" table="#__pedigree_dogs" key_field="id" value_field="name"  required="true"  /> 
 
        <field name="is_primary" type="text" size="40" class="inputbox"
         

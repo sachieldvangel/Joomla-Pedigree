@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version     1.0.2
+ * @version     1.0.3
  * @package     com_pedigree
  * @copyright   Copyright (C) 2014. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -16,6 +16,7 @@ jimport('joomla.application.component.modellist');
  */
 class PedigreeModelDogs extends JModelList {
 
+
     /**
      * Constructor.
      *
@@ -24,8 +25,62 @@ class PedigreeModelDogs extends JModelList {
      * @since    1.6
      */
     public function __construct($config = array()) {
+        if (empty($config['filter_fields'])) {
+            $config['filter_fields'] = array(
+                'id', 
+				'name', 
+				'id_sire', 
+				'id_dam', 
+                'sex', 
+                'birth_date', 
+                'call_name', 
+                'id_gallery_image', 
+                'id_gallery_category', 
+                'coi', 
+                'stud_number', 
+                'brs_number', 
+                'atc_number', 
+                'id_color', 
+                'color_variations', 
+                'id_pattern', 
+                'is_scented', 
+                'is_smooth', 
+                'is_bearded', 
+                'titles_prefix', 
+                'titles_suffix', 
+                'awards', 
+                'microchip', 
+                'dna_profile', 
+                'chic_number', 
+                'health_test_thyroid', 
+                'health_test_elbow', 
+                'health_test_hips', 
+                'health_test_eyes', 
+                'health_test_heart', 
+                'health_notes', 
+                'death_date', 
+                'death_cause', 
+                'is_stud', 
+                'stud_details', 
+                'is_semen', 
+                'videos', 
+                'articles', 
+                'notes', 
+                'source', 
+                'ordering', 
+                'state', 
+                'created_by', 
+				'sire', 
+				'dam', 
+				'registration',
+				'breeder',
+				'owner'
+            );
+        }
         parent::__construct($config);
     }
+	
+	//protected function getFilterForm($data
 
     /**
      * Method to auto-populate the model state.
@@ -38,21 +93,28 @@ class PedigreeModelDogs extends JModelList {
 
         // Initialise variables.
         $app = JFactory::getApplication();
-
-        // List state information
-        $limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'));
-        $this->setState('list.limit', $limit);
-
-        $limitstart = JFactory::getApplication()->input->getInt('limitstart', 0);
-        $this->setState('list.start', $limitstart);
-
-        
+		
 		if(empty($ordering)) {
 			$ordering = 'a.ordering';
 		}
 
         // List state information.
         parent::populateState($ordering, $direction);
+		
+        // List state information
+        $limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'));
+        $this->setState('list.limit', $limit);
+
+        //$limitstart = $app->input->getInt('start', 0);
+		$limitstart = $app->getUserStateFromRequest($this->context . '.limitstart', 'start', 0);
+		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+        $this->setState('list.start', $limitstart);
+		
+		// Filters
+		foreach ($this->filter_fields as $filterName) {
+			$tempState = $app->getUserStateFromRequest($this->context.'.filter.'.$filterName, $filterName);
+			$this->setState('filter.'.$filterName, preg_replace('/\s+/',' ', $tempState));
+		}
     }
 
     /**
@@ -67,72 +129,278 @@ class PedigreeModelDogs extends JModelList {
         $query = $db->getQuery(true);
 
         // Select the required fields from the table.
-        $query->select(
-                $this->getState(
-                        'list.select', 'a.*'
-                )
-        );
-
+        //$query->select($this->getState('list.select', 'DISTINCT a.*'));
+		$query->select('DISTINCT a.id, a.asset_id, a.name, a.id_sire, a.id_dam, a.sex, a.birth_date, a.stud_number, a.brs_number, a.id_color, a.id_pattern, a.titles_prefix, a.titles_suffix, a.id_gallery_image');
+		$query->select('a.ordering, a.state, a.checked_out, a.checked_out_time, a.created_by');
         $query->from('`#__pedigree_dogs` AS a');
-
+		
+		$orderCol = $this->state->get('list.ordering');
+		$orderDirn = $this->state->get('list.direction');
+		
+		$activeFilters = $this->getActiveFilters();
         
-    // Join over the users for the checked out user.
-    $query->select('uc.name AS editor');
-    $query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
-    
-		// Join over the foreign key 'id_sire'
-		$query->select('#__pedigree_dogs_1067710.name AS dogs_name_1067710');
-		$query->join('LEFT', '#__pedigree_dogs AS #__pedigree_dogs_1067710 ON #__pedigree_dogs_1067710.id = a.id_sire');
-		// Join over the foreign key 'id_dam'
-		$query->select('#__pedigree_dogs_1067711.name AS dogs_name_1067711');
-		$query->join('LEFT', '#__pedigree_dogs AS #__pedigree_dogs_1067711 ON #__pedigree_dogs_1067711.id = a.id_dam');
-		// Join over the foreign key 'id_color'
-		$query->select('#__pedigree_colors_1067722.color AS colors_color_1067722');
-		$query->join('LEFT', '#__pedigree_colors AS #__pedigree_colors_1067722 ON #__pedigree_colors_1067722.id = a.id_color');
-		// Join over the foreign key 'id_pattern'
-		$query->select('#__pedigree_patterns_1067724.pattern AS patterns_pattern_1067724');
-		$query->join('LEFT', '#__pedigree_patterns AS #__pedigree_patterns_1067724 ON #__pedigree_patterns_1067724.id = a.id_pattern');
-		// Join over the created by field 'created_by'
-		$query->select('created_by.name AS created_by');
+		// Join over the users for the checked out user.
+		$query->select('uc.name AS editor');
+		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+		$query->select('created_by.name AS creator');
 		$query->join('LEFT', '#__users AS created_by ON created_by.id = a.created_by');
-        
-
-        // Filter by search in title
-        $search = $this->getState('filter.search');
-        if (!empty($search)) {
-            if (stripos($search, 'id:') === 0) {
-                $query->where('a.id = ' . (int) substr($search, 3));
-            } else {
-                $search = $db->Quote('%' . $db->escape($search, true) . '%');
-                $query->where('( a.name LIKE '.$search.'  OR  a.birth_date LIKE '.$search.'  OR  a.titles_prefix LIKE '.$search.'  OR  a.titles_suffix LIKE '.$search.' )');
-            }
-        }
-
-        
-
-		//Filtering sex
-		$filter_sex = $this->state->get("filter.sex");
-		if ($filter_sex) {
-			$query->where("a.sex = '".$filter_sex."'");
+			
+		switch ($orderCol) {
+			case 'registration_number' :
+				// Avoid double join.
+				$query->select('#__pedigree_registrations.registration_number');
+				if (!empty($activeFilters['registration'])) {
+					$query->where('#__pedigree_registrations.is_primary = 1');
+				} else {
+					$query->join('LEFT', '#__pedigree_registrations ON (#__pedigree_registrations.id_dog = a.id AND #__pedigree_registrations.is_primary = 1)');
+				}
+				break;
+			case 'color_name' :
+				$query->select('#__pedigree_colors.color AS color_name');
+				$query->join('LEFT', '#__pedigree_colors ON #__pedigree_colors.id = a.id_color');
+				break;
+			case 'pattern_name' :
+				$query->select('#__pedigree_patterns.pattern AS pattern_name');
+				$query->join('LEFT', '#__pedigree_patterns ON #__pedigree_patterns.id = a.id_pattern');
+				break;
+			case 'sire_name' :
+				$query->select('#__pedigree_dogs_sire.name AS sire_name');
+				if (!empty($activeFilters['sire'])) {
+					$query->join('LEFT', '#__pedigree_dogs AS #__pedigree_dogs_sire ON #__pedigree_dogs_sire.id = a.id_sire');
+				}
+				break;
+			case 'dam_name' :
+				$query->select('#__pedigree_dogs_dam.name AS dam_name');
+				if (!empty($activeFilters['dam'])) {
+					$query->join('LEFT', '#__pedigree_dogs AS #__pedigree_dogs_dam ON #__pedigree_dogs_dam.id = a.id_dam');
+				}
+				break;
 		}
-
-		//Filtering id_color
-		$filter_id_color = $this->state->get("filter.id_color");
-		if ($filter_id_color) {
-			$query->where("a.id_color = '".$filter_id_color."'");
+        
+        // Filters
+		foreach ($activeFilters as $name => $value) {
+			if (!empty($value)) {
+				switch ($name) {
+					case 'name' :
+						if (stripos($activeFilters['name'], 'id:') === 0) {
+							$query->where('a.id = ' . (int) substr($value, 3));
+						} else {
+							$query->where('( a.name LIKE '.$db->Quote('%' . $db->escape($value, true) . '%').' )');
+						}
+						break;
+					case 'registration' :
+						$query->join('LEFT', '#__pedigree_registrations ON #__pedigree_registrations.id_dog = a.id');
+						$query->where('( registration_number LIKE '.$db->Quote('%' . $db->escape($value, true) . '%').' )');
+						break;
+					case 'breeder' :
+					case 'owner' :
+						$query->join("LEFT", "#__pedigree_".$name."s ON #__pedigree_".$name."s.id_dog = a.id");
+						$query->join("LEFT", "#__pedigree_people AS #__pedigree_people_".$name." ON #__pedigree_".$name."s.id_person = #__pedigree_people_".$name.".id");
+						$query->where("( #__pedigree_people_".$name.".last_name LIKE ".$db->Quote("%" . $db->escape($value, true) . "%")." )");
+						break;
+					case 'sire' :
+					case 'dam' :
+						$query->join("LEFT", "#__pedigree_dogs AS #__pedigree_dogs_".$name." ON #__pedigree_dogs_".$name.".id = a.id_".$name);
+						$query->where("( #__pedigree_dogs_".$name.".name LIKE ".$db->Quote("%" . $db->escape($value, true) . "%")." )");
+						break;
+					// Typical LIKE
+					case 'birth_date' :
+					case 'call_name' :
+					case 'brs_number' :
+					case 'stud_number' :
+					case 'atc_number' :
+					case 'titles_prefix' :
+					case 'titles_suffix' :
+					case 'awards' :
+                	case 'microchip' :
+					case 'dna_profile' : 
+					case 'chic_number' :
+					case 'health_test_thyroid' :
+					case 'health_test_elbow' :
+					case 'health_test_hips' :
+					case 'health_test_eyes' :
+					case 'health_test_heart' : 
+					case 'health_notes' :
+					case 'death_date' :
+					case 'death_cause' :
+					case 'videos' :
+					case 'articles' : 
+					case 'notes' :
+					case 'source' :
+						$query->where('( '.$name.' LIKE '.$db->Quote('%' . $db->escape($value, true) . '%').' )');
+						break;
+					// Special LIKE for the boys
+					case 'stud_details' :
+						$query->where("( ".$name." LIKE ".$db->Quote("%" . $db->escape($value, true) . "%")." AND sex='1')");
+						break;
+					// Typical =
+					case 'sex' :
+					case 'id_color' :
+					case 'id_pattern' :
+					case 'is_scented' :
+					case 'is_smooth' :
+					case 'is_bearded' :
+						$query->where($name." = ".$db->Quote($db->escape($value, true)));
+						break;
+					// Special = for the boys
+					case 'is_stud' :
+					case 'is_semen' :
+						$query->where($name." = ".$db->Quote($db->escape($value, true))." AND sex = '1'");
+						break;
+					default :
+						break;				
+				}
+			}
 		}
-
-		//Filtering id_pattern
-		$filter_id_pattern = $this->state->get("filter.id_pattern");
-		if ($filter_id_pattern) {
-			$query->where("a.id_pattern = '".$filter_id_pattern."'");
+		
+        // Add the list ordering clause.
+		if ($activeFilters) {
+			if ($orderCol && $orderDirn) {
+				$query->order($db->escape($orderCol . ' ' . $orderDirn));
+			}
 		}
 
         return $query;
     }
 
-    public function getItems() {
-        return parent::getItems();
-    }
+    public function getItems() {		
+        $items = parent::getItems();
+		
+        foreach($items as $item){
+			if (isset($item->id_sire) && $item->id_sire != 0) {
+				if(is_object($item->id_sire)){
+					$item->id_sire = JArrayHelper::fromObject($item->id_sire);
+				}
+				$values = (is_array($item->id_sire)) ? $item->id_sire : explode(',',$item->id_sire);
 
+				$textValue = array();
+				foreach ($values as $value){
+					$db = JFactory::getDbo();
+					$query = $db->getQuery(true);
+					$query
+							->select('name')
+							->from('`#__pedigree_dogs`')
+							->where('id = ' . $db->quote($db->escape($value)));
+					$db->setQuery($query);
+					$results = $db->loadObject();
+					if ($results) {
+						$textValue[] = $results->name;
+					}
+				}
+
+				$item->sire_name = !empty($textValue) ? implode(', ', $textValue) : ''; //$item->id_sire;
+			} else {
+				$item->sire_name = JText::_('COM_PEDIGREE_DOG_UNKNOWN');
+			}
+
+			if (isset($item->id_dam) && $item->id_dam != 0) {
+				if(is_object($item->id_dam)){
+					$item->id_dam = JArrayHelper::fromObject($item->id_dam);
+				}
+				$values = (is_array($item->id_dam)) ? $item->id_dam : explode(',',$item->id_dam);
+
+				$textValue = array();
+				foreach ($values as $value){
+					$db = JFactory::getDbo();
+					$query = $db->getQuery(true);
+					$query
+							->select('name')
+							->from('`#__pedigree_dogs`')
+							->where('id = ' . $db->quote($db->escape($value)));
+					$db->setQuery($query);
+					$results = $db->loadObject();
+					if ($results) {
+						$textValue[] = $results->name;
+					}
+				}
+
+				$item->dam_name = !empty($textValue) ? implode(', ', $textValue) : ''; //$item->id_dam;
+			} else {
+				$item->dam_name = JText::_('COM_PEDIGREE_DOG_UNKNOWN');
+			}
+			
+			$item->sex_name = JText::_('COM_PEDIGREE_DOGS_SEX_OPTION_' . strtoupper($item->sex));
+			
+			
+			/**
+				Registrations
+			**/
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
+			$query
+					->select('a.`registration_number`, b.`iso3`')
+					->from('#__pedigree_registrations a')
+					->innerJoin('#__pedigree_countries b ON a.`id_country` = b.`id`')
+					->where('a.`id_dog` = ' . $db->quote($db->escape($item->id)))
+					->order('a.`is_primary` DESC');
+			$db->setQuery($query);
+			$results = $db->loadObjectList();
+			if ($results) {				
+				foreach ($results as $row){
+					$item->registrations[] = $row;
+				}				
+			}
+
+			/*if (isset($item->id_color) && $item->id_color != '') {
+				if(is_object($item->id_color)){
+					$item->id_color = JArrayHelper::fromObject($item->id_color);
+				}
+				$values = (is_array($item->id_color)) ? $item->id_color : explode(',',$item->id_color);
+
+				$textValue = array();
+				foreach ($values as $value){
+					$db = JFactory::getDbo();
+					$query = $db->getQuery(true);
+					$query
+							->select('color')
+							->from('`#__pedigree_colors`')
+							->where('id = ' . $db->quote($db->escape($value)));
+					$db->setQuery($query);
+					$results = $db->loadObject();
+					if ($results) {
+						$textValue[] = $results->color;
+					}
+				}
+
+				$item->color_name = !empty($textValue) ? implode(', ', $textValue) : ''; //$item->id_color;
+			}
+
+			if (isset($item->id_pattern) && $item->id_pattern != '') {
+				if(is_object($item->id_pattern)){
+					$item->id_pattern = JArrayHelper::fromObject($item->id_pattern);
+				}
+				$values = (is_array($item->id_pattern)) ? $item->id_pattern : explode(',',$item->id_pattern);
+
+				$textValue = array();
+				foreach ($values as $value){
+					$db = JFactory::getDbo();
+					$query = $db->getQuery(true);
+					$query
+							->select('pattern')
+							->from('`#__pedigree_patterns`')
+							->where('id = ' . $db->quote($db->escape($value)));
+					$db->setQuery($query);
+					$results = $db->loadObject();
+					if ($results) {
+						$textValue[] = $results->pattern;
+					}
+				}
+
+				$item->pattern_name = !empty($textValue) ? implode(', ', $textValue) : ''; //$item->id_pattern;
+			}*/
+		}
+        return $items;
+    }
+	
+	/**
+	 * Method to get the starting number of items for the data set.
+	 *
+	 * @return  integer  The starting number of items available in the data set.
+	 *
+	 * @since   12.2
+	 */
+	public function getStart()
+	{
+		return $this->getState('list.start');
+	}
 }

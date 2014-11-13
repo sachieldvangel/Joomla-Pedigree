@@ -79,16 +79,9 @@
             menu_published="0"
             filter="string" /> 
 
-       <field name="id_country" type="sql" class="inputbox"
-        
+ <field name="id_country" type="foreignkey" class="inputbox"
             label="COM_PEDIGREE_FORM_LBL_PEOPLE_ID_COUNTRY"
-            description="COM_PEDIGREE_FORM_DESC_PEOPLE_ID_COUNTRY" 
-        
-        
-        
-         required="true" 
-        query="SELECT 0 AS `id`, '- Please select -' AS `short_name` UNION SELECT `id`, `short_name` FROM `#__pedigree_countries`" key_field="id" value_field="short_name"
-         /> 
+            description="COM_PEDIGREE_FORM_DESC_PEOPLE_ID_COUNTRY" input_type="list" table="#__pedigree_countries" key_field="id" value_field="short_name"  required="true"  /> 
 
        <field name="home_phone" type="text"
                 
@@ -100,13 +93,8 @@
             menu_published="0"
             filter="string" /> 
 
-       <field name="email" type="email"
-                
-            label="COM_PEDIGREE_FORM_LBL_PEOPLE_EMAIL"
-            description="COM_PEDIGREE_FORM_DESC_PEOPLE_EMAIL" 
-                
-                
-                 /> 
+ 
+		<field name="email" type="email" label="Email" description="" validate="email"   /> 
 
        <field name="website" type="text"
                 

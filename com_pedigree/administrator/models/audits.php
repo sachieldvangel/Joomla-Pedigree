@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version     1.0.2
+ * @version     1.0.3
  * @package     com_pedigree
  * @copyright   Copyright (C) 2014. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -105,16 +105,15 @@ class PedigreeModelAudits extends JModelList {
         // Select the required fields from the table.
         $query->select(
                 $this->getState(
-                        'list.select', 'a.*'
+                        'list.select', 'DISTINCT a.*'
                 )
         );
         $query->from('`#__pedigree_audits` AS a');
 
         
-    // Join over the users for the checked out user.
-    $query->select('uc.name AS editor');
-    $query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
-    
+		// Join over the users for the checked out user
+		$query->select("uc.name AS editor");
+		$query->join("LEFT", "#__users AS uc ON uc.id=a.checked_out");
 		// Join over the user field 'user_id'
 		$query->select('user_id.name AS user_id');
 		$query->join('LEFT', '#__users AS user_id ON user_id.id = a.user_id');
@@ -123,14 +122,14 @@ class PedigreeModelAudits extends JModelList {
 		$query->join('LEFT', '#__users AS created_by ON created_by.id = a.created_by');
 
         
-    // Filter by published state
-    $published = $this->getState('filter.state');
-    if (is_numeric($published)) {
-        $query->where('a.state = '.(int) $published);
-    } else if ($published === '') {
-        $query->where('(a.state IN (0, 1))');
-    }
-    
+
+		// Filter by published state
+		$published = $this->getState('filter.state');
+		if (is_numeric($published)) {
+			$query->where('a.state = ' . (int) $published);
+		} else if ($published === '') {
+			$query->where('(a.state IN (0, 1))');
+		}
 
         // Filter by search in title
         $search = $this->getState('filter.search');

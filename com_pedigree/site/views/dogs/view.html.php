@@ -1,6 +1,6 @@
 <?php
 /**
- * @version     1.0.2
+ * @version     1.0.3
  * @package     com_pedigree
  * @copyright   Copyright (C) 2014. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -21,6 +21,8 @@ class PedigreeViewDogs extends JViewLegacy
 	protected $pagination;
 	protected $state;
     protected $params;
+	protected $activeFilters;
+	protected $filterForm;
 
 	/**
 	 * Display the view
@@ -33,7 +35,13 @@ class PedigreeViewDogs extends JViewLegacy
         $this->items		= $this->get('Items');
         $this->pagination	= $this->get('Pagination');
         $this->params       = $app->getParams('com_pedigree');
-        
+		
+		$this->activeFilters = $this->get('ActiveFilters');
+		$this->filterForm = $this->get('FilterForm');
+		
+
+		//$data = $this->pagination->getData;
+		
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {;
             throw new Exception(implode("\n", $errors));
@@ -88,6 +96,9 @@ class PedigreeViewDogs extends JViewLegacy
 		{
 			$this->document->setMetadata('robots', $this->params->get('robots'));
 		}
-	}    
-    	
+		
+		if ($this->filterForm) {
+			$this->filterForm->bind($this->activeFilters);
+		}
+	}    	
 }

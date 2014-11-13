@@ -1,26 +1,25 @@
 <?php
+
 /**
- * @version     1.0.2
+ * @version     1.0.3
  * @package     com_pedigree
  * @copyright   Copyright (C) 2014. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  * @author      Eddie Kominek <eddie@kominekafghans.com> - http://www.kominekafghans.com/
  */
-
 // No direct access
 defined('_JEXEC') or die;
 
 /**
  * Pedigree helper.
  */
-class PedigreeHelper
-{
-	/**
-	 * Configure the Linkbar.
-	 */
-	public static function addSubmenu($vName = '')
-	{
-		JHtmlSidebar::addEntry(
+class PedigreeHelper {
+
+    /**
+     * Configure the Linkbar.
+     */
+    public static function addSubmenu($vName = '') {
+        		JHtmlSidebar::addEntry(
 			JText::_('COM_PEDIGREE_TITLE_AUDITS'),
 			'index.php?option=com_pedigree&view=audits',
 			$vName == 'audits'
@@ -80,30 +79,41 @@ class PedigreeHelper
 			'index.php?option=com_pedigree&view=registrations',
 			$vName == 'registrations'
 		);
-
-	}
-
-	/**
-	 * Gets a list of the actions that can be performed.
-	 *
-	 * @return	JObject
-	 * @since	1.6
-	 */
-	public static function getActions()
-	{
-		$user	= JFactory::getUser();
-		$result	= new JObject;
-
-		$assetName = 'com_pedigree';
-
-		$actions = array(
-			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.own', 'core.edit.state', 'core.delete'
+		JHtmlSidebar::addEntry(
+			JText::_('COM_PEDIGREE_TITLE_HOUNDS'),
+			'index.php?option=com_pedigree&view=hounds',
+			$vName == 'hounds'
+		);
+		JHtmlSidebar::addEntry(
+			JText::_('COM_PEDIGREE_TITLE_FANCIERS'),
+			'index.php?option=com_pedigree&view=fanciers',
+			$vName == 'fanciers'
 		);
 
-		foreach ($actions as $action) {
-			$result->set($action, $user->authorise($action, $assetName));
-		}
+    }
 
-		return $result;
-	}
+    /**
+     * Gets a list of the actions that can be performed.
+     *
+     * @return	JObject
+     * @since	1.6
+     */
+    public static function getActions() {
+        $user = JFactory::getUser();
+        $result = new JObject;
+
+        $assetName = 'com_pedigree';
+
+        $actions = array(
+            'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.own', 'core.edit.state', 'core.delete'
+        );
+
+        foreach ($actions as $action) {
+            $result->set($action, $user->authorise($action, $assetName));
+        }
+
+        return $result;
+    }
+
+
 }

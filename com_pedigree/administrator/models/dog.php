@@ -1,6 +1,6 @@
 <?php
 /**
- * @version     1.0.2
+ * @version     1.0.3
  * @package     com_pedigree
  * @copyright   Copyright (C) 2014. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -76,42 +76,6 @@ class PedigreeModelDog extends JModelAdmin
 		if (empty($data)) {
 			$data = $this->getItem();
             
-
-			//Support for multiple or not foreign key field: id_sire
-			$array = array();
-			foreach((array)$data->id_sire as $value): 
-				if(!is_array($value)):
-					$array[] = $value;
-				endif;
-			endforeach;
-			$data->id_sire = implode(',',$array);
-
-			//Support for multiple or not foreign key field: id_dam
-			$array = array();
-			foreach((array)$data->id_dam as $value): 
-				if(!is_array($value)):
-					$array[] = $value;
-				endif;
-			endforeach;
-			$data->id_dam = implode(',',$array);
-
-			//Support for multiple or not foreign key field: id_color
-			$array = array();
-			foreach((array)$data->id_color as $value): 
-				if(!is_array($value)):
-					$array[] = $value;
-				endif;
-			endforeach;
-			$data->id_color = implode(',',$array);
-
-			//Support for multiple or not foreign key field: id_pattern
-			$array = array();
-			foreach((array)$data->id_pattern as $value): 
-				if(!is_array($value)):
-					$array[] = $value;
-				endif;
-			endforeach;
-			$data->id_pattern = implode(',',$array);
 		}
 
 		return $data;

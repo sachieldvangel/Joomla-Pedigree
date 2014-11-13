@@ -1,37 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <config>
-	<fieldset name="component"
-		label="COM_PEDIGREE_COMPONENT_LABEL"
-		description="COM_PEDIGREE_COMPONENT_DESC"
-	>
-
-        <field name="test"
-             type="radio"
-             default="1"
-             label="COM_PEDIGREE_TEST_LABEL"
-             description="COM_PEDIGREE_TEST_DESC">
-                 <option value="0">JHIDE</option>
-                 <option value="1">JSHOW</option>
-         </field>
-
-	</fieldset>
-
-	<fieldset name="permissions"
-		description="JCONFIG_PERMISSIONS_DESC"
-		label="JCONFIG_PERMISSIONS_LABEL"
-	>
-
-		<field 
-            name="rules" 
-            type="rules"
-			component="com_pedigree"
-            class="inputbox"
-			filter="rules"
-			validate="rules"
-			label="JCONFIG_PERMISSIONS_LABEL"
-			section="component" />
-	</fieldset>
-
+  <fieldset description="COM_PEDIGREE_CONFIGURATION" label="JFIELD_PLG_SEARCH_SEARCHLIMIT_LABEL" name="pedigree">
+    <field name="list_limit" type="list" label="List Limit" description="">
+		<option value="10">10</option>
+		<option value="20">20</option>
+		<option value="30">30</option>
+		<option value="50">50</option>
+		<option value="100">100</option>
+		<option value="200">200</option>
+	</field>
+    <field name="breed" type="text" label="COM_PEDIGREE_FORM_LBL_BREED" description="COM_PEDIGREE_FORM_DESC_BREED" filter="string" maxlength="64" />
+    <field name="gen-min" type="integer" label="COM_PEDIGREE_FORM_LBL_GENERATIONS_MINIMUM" description="COM_PEDIGREE_FORM_DESC_GENERATIONS_MINIMUM" default="1" first="1" last="10" step="1" />
+    <field name="gen-max" type="integer" label="COM_PEDIGREE_FORM_LBL_GENERATIONS_MAXIMUM" description="COM_PEDIGREE_FORM_DESC_GENERATIONS_MAXIMUM" default="10" first="1" last="10" step="1" />
+    <field name="gen-default" type="integer" label="COM_PEDIGREE_FORM_LBL_GENERATIONS_DEFAULT" description="COM_PEDIGREE_FORM_DESC_GENERATIONS_DEFAULT" default="4" first="1" last="10" step="1" />
+    <field name="gen-titles" type="radio" label="COM_PEDIGREE_FORM_LBL_GENERATIONS_TITLES" description="COM_PEDIGREE_FORM_DESC_GENERATIONS_TITLES" class="btn-group btn-group-yesno" default="1">
+      <option value="1">JYES</option>
+      <option value="0">JNO</option>
+    </field>
+    <field name="gen-regnumber" type="radio" label="COM_PEDIGREE_FORM_LBL_GENERATIONS_REGNUMBER" description="COM_PEDIGREE_FORM_DESC_GENERATIONS_REGNUMBER" class="btn-group btn-group-yesno" default="0">
+      <option value="1">JYES</option>
+      <option value="0">JNO</option>
+    </field>
+    <field name="gen-imagethumbsenabled" type="radio" label="COM_PEDIGREE_FORM_LBL_GENERATIONS_IMAGETHUMBSENABLED" description="COM_PEDIGREE_FORM_DESC_GENERATIONS_IMAGETHUMBSENABLED" class="btn-group btn-group-yesno" default="1">
+      <option value="1">JYES</option>
+      <option value="0">JNO</option>
+    </field>
+    <field name="gen-imagethumbs" type="radio" label="COM_PEDIGREE_FORM_LBL_GENERATIONS_IMAGETHUMBS" description="COM_PEDIGREE_FORM_DESC_GENERATIONS_IMAGETHUMBS" class="btn-group btn-group-yesno" default="0">
+      <option value="1">JYES</option>
+      <option value="0">JNO</option>
+    </field>
+    <field name="gen-occurrencecolors" type="radio" label="COM_PEDIGREE_FORM_LBL_GENERATIONS_COLORS" description="COM_PEDIGREE_FORM_DESC_GENERATIONS_COLORS" class="btn-group btn-group-yesno" default="1">
+      <option value="1">JYES</option>
+      <option value="0">JNO</option>
+    </field>
+  </fieldset>
+  <fieldset name="permissions" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">
+    <field name="rules" type="rules" component="com_pedigree" class="inputbox" filter="rules" validate="rules" label="JCONFIG_PERMISSIONS_LABEL" section="component" />
+  </fieldset>
 </config>
 <!--
 ########################################################################################
@@ -106,4 +111,4 @@ http://docs.joomla.org/Usergroup_parameter_type
 <field name="myusergroups" type="usergroup" default="" label="Select a user group" description="" />
 
 
- -->
+-->

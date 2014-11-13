@@ -1,6 +1,6 @@
 <?php
 /**
- * @version     1.0.2
+ * @version     1.0.3
  * @package     com_pedigree
  * @copyright   Copyright (C) 2014. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -76,24 +76,6 @@ class PedigreeModelJudging extends JModelAdmin
 		if (empty($data)) {
 			$data = $this->getItem();
             
-
-			//Support for multiple or not foreign key field: id_person
-			$array = array();
-			foreach((array)$data->id_person as $value): 
-				if(!is_array($value)):
-					$array[] = $value;
-				endif;
-			endforeach;
-			$data->id_person = implode(',',$array);
-
-			//Support for multiple or not foreign key field: id_country
-			$array = array();
-			foreach((array)$data->id_country as $value): 
-				if(!is_array($value)):
-					$array[] = $value;
-				endif;
-			endforeach;
-			$data->id_country = implode(',',$array);
 		}
 
 		return $data;

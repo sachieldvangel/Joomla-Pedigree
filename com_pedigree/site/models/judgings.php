@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version     1.0.2
+ * @version     1.0.3
  * @package     com_pedigree
  * @copyright   Copyright (C) 2014. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -24,6 +24,19 @@ class PedigreeModelJudgings extends JModelList {
      * @since    1.6
      */
     public function __construct($config = array()) {
+        if (empty($config['filter_fields'])) {
+            $config['filter_fields'] = array(
+                                'id', 'a.id',
+                'id_person', 'a.id_person',
+                'id_country', 'a.id_country',
+                'date', 'a.date',
+                'notes', 'a.notes',
+                'ordering', 'a.ordering',
+                'state', 'a.state',
+                'created_by', 'a.created_by',
+
+            );
+        }
         parent::__construct($config);
     }
 
@@ -69,7 +82,7 @@ class PedigreeModelJudgings extends JModelList {
         // Select the required fields from the table.
         $query->select(
                 $this->getState(
-                        'list.select', 'a.*'
+                        'list.select', 'DISTINCT a.*'
                 )
         );
 
@@ -87,7 +100,6 @@ class PedigreeModelJudgings extends JModelList {
 		$query->select('#__pedigree_countries_1067775.short_name AS countries_short_name_1067775');
 		$query->join('LEFT', '#__pedigree_countries AS #__pedigree_countries_1067775 ON #__pedigree_countries_1067775.id = a.id_country');
 		// Join over the created by field 'created_by'
-		$query->select('created_by.name AS created_by');
 		$query->join('LEFT', '#__users AS created_by ON created_by.id = a.created_by');
         
 
@@ -110,11 +122,72 @@ class PedigreeModelJudgings extends JModelList {
 			$query->where("a.id_country = '".$filter_id_country."'");
 		}
 
+        // Add the list ordering clause.
+        $orderCol = $this->state->get('list.ordering');
+        $orderDirn = $this->state->get('list.direction');
+        if ($orderCol && $orderDirn) {
+            $query->order($db->escape($orderCol . ' ' . $orderDirn));
+        }
+
         return $query;
     }
 
     public function getItems() {
-        return parent::getItems();
+        $items = parent::getItems();
+        foreach($items as $item){
+	
+
+			if (isset($item->id_person) && $item->id_person != '') {
+				if(is_object($item->id_person)){
+					$item->id_person = JArrayHelper::fromObject($item->id_person);
+				}
+				$values = (is_array($item->id_person)) ? $item->id_person : explode(',',$item->id_person);
+
+				$textValue = array();
+				foreach ($values as $value){
+					$db = JFactory::getDbo();
+					$query = $db->getQuery(true);
+					$query
+							->select('last_name')
+							->from('`#__pedigree_people`')
+							->where('id = ' . $db->quote($db->escape($value)));
+					$db->setQuery($query);
+					$results = $db->loadObject();
+					if ($results) {
+						$textValue[] = $results->last_name;
+					}
+				}
+
+			$item->id_person = !empty($textValue) ? implode(', ', $textValue) : $item->id_person;
+
+			}
+
+			if (isset($item->id_country) && $item->id_country != '') {
+				if(is_object($item->id_country)){
+					$item->id_country = JArrayHelper::fromObject($item->id_country);
+				}
+				$values = (is_array($item->id_country)) ? $item->id_country : explode(',',$item->id_country);
+
+				$textValue = array();
+				foreach ($values as $value){
+					$db = JFactory::getDbo();
+					$query = $db->getQuery(true);
+					$query
+							->select('short_name')
+							->from('`#__pedigree_countries`')
+							->where('id = ' . $db->quote($db->escape($value)));
+					$db->setQuery($query);
+					$results = $db->loadObject();
+					if ($results) {
+						$textValue[] = $results->short_name;
+					}
+				}
+
+			$item->id_country = !empty($textValue) ? implode(', ', $textValue) : $item->id_country;
+
+			}
+}
+        return $items;
     }
 
 }

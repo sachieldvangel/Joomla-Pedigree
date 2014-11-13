@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fieldset>
+		<field name="sex" type="list" label="COM_PEDIGREE_FORM_LBL_DOG_SEX" description="COM_PEDIGREE_FORM_DESC_DOG_SEX" required="true" menu_published="0" filter="raw" onchange="this.form.submit();">
+			<option value="">COM_PEDIGREE_FORM_LBL_DOG_SEX_FILTER</option>
+			<option value="0">COM_PEDIGREE_FORM_LBL_DOG_SEX_OPTION_0</option>
+			<option value="1">COM_PEDIGREE_FORM_LBL_DOG_SEX_OPTION_1</option>
+		</field>
+		<field name="birth_date" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_BIRTH_DATE" description="COM_PEDIGREE_FORM_DESC_DOG_BIRTH_DATE" menu_published="0" filter="string" maxlength="10" />
+		<field name="call_name" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_CALL_NAME" description="COM_PEDIGREE_FORM_DESC_DOG_CALL_NAME" menu_published="0" filter="string" maxlength="50" />
+		<field name="coi" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_COI" description="COM_PEDIGREE_FORM_DESC_DOG_COI" menu_published="0" readonly="true" filter="float" />
+		<field name="stud_number" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_STUD_NUMBER" description="COM_PEDIGREE_FORM_DESC_DOG_STUD_NUMBER" menu_published="0" filter="string" maxlength="100" />
+		<field name="brs_number" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_BRS_NUMBER" description="COM_PEDIGREE_FORM_DESC_DOG_BRS_NUMBER" menu_published="0" filter="string" maxlength="20" />
+		<field name="atc_number" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_ATC_NUMBER" description="COM_PEDIGREE_FORM_DESC_DOG_ATC_NUMBER" menu_published="0" filter="string" maxlength="50" />
+		<field name="id_color" type="sql" class="inputbox" label="COM_PEDIGREE_FORM_LBL_DOG_ID_COLOR" description="COM_PEDIGREE_FORM_DESC_DOG_ID_COLOR" query="SELECT 0 AS `id`, '- Please select -' AS `color` UNION SELECT `id`, `color` FROM `#__pedigree_colors`" key_field="id" value_field="color" onchange="this.form.submit();" />
+		<field name="color_variations" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_COLOR_VARIATIONS" description="COM_PEDIGREE_FORM_DESC_DOG_COLOR_VARIATIONS" menu_published="0" filter="string" maxlength="100" />
+		<field name="id_pattern" type="sql" class="inputbox" label="COM_PEDIGREE_FORM_LBL_DOG_ID_PATTERN" description="COM_PEDIGREE_FORM_DESC_DOG_ID_PATTERN" query="SELECT 0 AS `id`, '- Please select -' AS `pattern` UNION SELECT `id`, `pattern` FROM `#__pedigree_patterns`" key_field="id" value_field="pattern" onchange="this.form.submit();" />
+		<field name="is_scented" type="checkbox" label="COM_PEDIGREE_FORM_LBL_DOG_IS_SCENTED" description="COM_PEDIGREE_FORM_DESC_DOG_IS_SCENTED" value="0" onchange="this.form.submit();"  />
+		<field name="is_smooth" type="checkbox" label="COM_PEDIGREE_FORM_LBL_DOG_IS_SMOOTH" description="COM_PEDIGREE_FORM_DESC_DOG_IS_SMOOTH" value="0" onchange="this.form.submit();" />
+		<field name="is_bearded" type="checkbox" label="COM_PEDIGREE_FORM_LBL_DOG_IS_BEARDED" description="COM_PEDIGREE_FORM_DESC_DOG_IS_BEARDED" value="0" onchange="this.form.submit();" />
+		<field name="titles_prefix" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_TITLES_PREFIX" description="COM_PEDIGREE_FORM_DESC_DOG_TITLES_PREFIX" menu_published="0" filter="string" maxlength="255" />
+		<field name="titles_suffix" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_TITLES_SUFFIX" description="COM_PEDIGREE_FORM_DESC_DOG_TITLES_SUFFIX" menu_published="0" filter="string" maxlength="255" />
+		<field name="awards" type="textarea" label="COM_PEDIGREE_FORM_LBL_DOG_AWARDS" description="COM_PEDIGREE_FORM_DESC_DOG_AWARDS" menu_published="0" cols="100" rows="8" filter="string" />
+		<field name="microchip" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_MICROCHIP" description="COM_PEDIGREE_FORM_DESC_DOG_MICROCHIP" menu_published="0" filter="alnum" />
+		<field name="dna_profile" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_DNA_PROFILE" description="COM_PEDIGREE_FORM_DESC_DOG_DNA_PROFILE" menu_published="0" filter="string" maxlength="100" />
+		<field name="chic_number" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_CHIC_NUMBER" description="COM_PEDIGREE_FORM_DESC_DOG_CHIC_NUMBER" menu_published="0" filter="string" maxlength="10" />
+		<field name="health_test_thyroid" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_HEALTH_TEST_THYROID" description="COM_PEDIGREE_FORM_DESC_DOG_HEALTH_TEST_THYROID" menu_published="0" filter="string" maxlength="255" />
+		<field name="health_test_elbow" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_HEALTH_TEST_ELBOW" description="COM_PEDIGREE_FORM_DESC_DOG_HEALTH_TEST_ELBOW" menu_published="0" filter="string" maxlength="255" />
+		<field name="health_test_hips" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_HEALTH_TEST_HIPS" description="COM_PEDIGREE_FORM_DESC_DOG_HEALTH_TEST_HIPS" menu_published="0" filter="string" maxlength="255" />
+		<field name="health_test_eyes" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_HEALTH_TEST_EYES" description="COM_PEDIGREE_FORM_DESC_DOG_HEALTH_TEST_EYES" menu_published="0" filter="string" maxlength="255" />
+		<field name="health_test_heart" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_HEALTH_TEST_HEART" description="COM_PEDIGREE_FORM_DESC_DOG_HEALTH_TEST_HEART" menu_published="0" filter="string" maxlength="255" />
+		<field name="health_notes" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_HEALTH_NOTES" description="COM_PEDIGREE_FORM_DESC_DOG_HEALTH_NOTES" menu_published="0" filter="string" />
+		<field name="death_date" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_DEATH_DATE" description="COM_PEDIGREE_FORM_DESC_DOG_DEATH_DATE" menu_published="0" filter="string" maxlength="10" />
+		<field name="death_cause" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_DEATH_CAUSE" description="COM_PEDIGREE_FORM_DESC_DOG_DEATH_CAUSE" menu_published="0" filter="string" maxlength="255" />
+		<field name="is_stud" type="checkbox" label="COM_PEDIGREE_FORM_LBL_DOG_IS_STUD" description="COM_PEDIGREE_FORM_DESC_DOG_IS_STUD" value="0" />
+		<field name="stud_details" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_STUD_DETAILS" description="COM_PEDIGREE_FORM_DESC_DOG_STUD_DETAILS" menu_published="0" filter="string" />
+		<field name="is_semen" type="checkbox" label="COM_PEDIGREE_FORM_LBL_DOG_IS_SEMEN" description="COM_PEDIGREE_FORM_DESC_DOG_IS_SEMEN" value="0" />
+		<field name="videos" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_VIDEOS" description="COM_PEDIGREE_FORM_DESC_DOG_VIDEOS" menu_published="0" filter="string" maxlength="255" />
+		<field name="articles" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_ARTICLES" description="COM_PEDIGREE_FORM_DESC_DOG_ARTICLES" menu_published="0" filter="string" maxlength="255" />
+		<field name="notes" type="textarea" label="COM_PEDIGREE_FORM_LBL_DOG_NOTES" description="COM_PEDIGREE_FORM_DESC_DOG_NOTES" menu_published="0" cols="100" rows="8" filter="string" />
+		<field name="source" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_SOURCE" description="COM_PEDIGREE_FORM_DESC_DOG_SOURCE" menu_published="0" filter="string" maxlength="255" />
+	</fieldset>
+	<fieldset name="accesscontrol">
+		<field name="asset_id" type="hidden" filter="unset" />
+		<field name="rules" type="rules" label="JFIELD_RULES_LABEL" translate_label="false" filter="rules" validate="rules" class="inputbox" component="com_pedigree" section="dog" />
+	</fieldset>
+</form>

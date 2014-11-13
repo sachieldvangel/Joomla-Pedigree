@@ -6,16 +6,9 @@
             readonly="true" class="readonly"
             description="JGLOBAL_FIELD_ID_DESC" /> 
 
-       <field name="id_person" type="sql" class="inputbox"
-        
+ <field name="id_person" type="foreignkey" class="inputbox"
             label="COM_PEDIGREE_FORM_LBL_PERSONDELEGATION_ID_PERSON"
-            description="COM_PEDIGREE_FORM_DESC_PERSONDELEGATION_ID_PERSON" 
-        
-        
-        
-         required="true" 
-        query="SELECT '' AS `id`, '- Select Person -' AS `last_name` UNION SELECT `id`, `last_name` FROM `#__pedigree_people`" key_field="id" value_field="last_name"
-         /> 
+            description="COM_PEDIGREE_FORM_DESC_PERSONDELEGATION_ID_PERSON" input_type="list" table="#__pedigree_people" key_field="id" value_field="last_name"  required="true"  /> 
 
        <field name="id_user" type="user"
                 

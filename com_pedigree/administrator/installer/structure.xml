@@ -1,0 +1,198 @@
+<?xml version="1.0"?>
+<component>
+  <table action="add" table_name="#__pedigree_audits" storage_engine="InnoDB" collation="utf8_general_ci">
+    <field field_name="id" field_type="INT" field_length="11" is_autoincrement="1" description=""/>
+    <field field_name="user_id" field_type="INT" field_length="11" description=""/>
+    <field field_name="user_ip" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="operation_type" field_type="ENUM" field_length="'Insert','Update','Deleted','Unknown'" description=""/>
+    <field field_name="operation_table" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="operation_field" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="operation_id" field_type="INT" field_length="11" description=""/>
+    <field field_name="operation_time" field_type="TIMESTAMP" description=""/>
+    <field field_name="operation_olddata" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="operation_newdata" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="ordering" field_type="INT" field_length="11" description=""/>
+    <field field_name="state" field_type="TINYINT" field_length="1" description=""/>
+    <field field_name="checked_out" field_type="INT" field_length="11" description=""/>
+    <field field_name="checked_out_time" field_type="DATETIME" description=""/>
+    <field field_name="created_by" field_type="INT" field_length="11" description=""/>
+  </table>
+  <table action="add" table_name="#__pedigree_breeders" storage_engine="InnoDB" collation="utf8_general_ci">
+    <field field_name="id" field_type="INT" field_length="11" is_autoincrement="1" description=""/>
+    <field field_name="id_person" field_type="INT" field_length="11" description=""/>
+    <field field_name="id_dog" field_type="INT" field_length="11" description=""/>
+    <field field_name="is_primary" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="ordering" field_type="INT" field_length="11" description=""/>
+    <field field_name="state" field_type="TINYINT" field_length="1" description=""/>
+    <field field_name="checked_out" field_type="INT" field_length="11" description=""/>
+    <field field_name="checked_out_time" field_type="DATETIME" description=""/>
+    <field field_name="created_by" field_type="INT" field_length="11" description=""/>
+  </table>
+  <table action="add" table_name="#__pedigree_colors" storage_engine="InnoDB" collation="utf8_general_ci">
+    <field field_name="id" field_type="INT" field_length="11" is_autoincrement="1" description=""/>
+    <field field_name="color" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="description" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="image" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="ordering" field_type="INT" field_length="11" description=""/>
+    <field field_name="state" field_type="TINYINT" field_length="1" description=""/>
+    <field field_name="checked_out" field_type="INT" field_length="11" description=""/>
+    <field field_name="checked_out_time" field_type="DATETIME" description=""/>
+    <field field_name="created_by" field_type="INT" field_length="11" description=""/>
+  </table>
+  <table action="add" table_name="#__pedigree_countries" storage_engine="InnoDB" collation="utf8_general_ci">
+    <field field_name="id" field_type="INT" field_length="11" is_autoincrement="1" description=""/>
+    <field field_name="short_name" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="long_name" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="iso2" field_type="CHAR" field_length="2" description="ISO abbreviation with 2 characters."/>
+    <field field_name="iso3" field_type="CHAR" field_length="3" description=""/>
+    <field field_name="numcode" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="un_member" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="calling_code" field_type="VARCHAR" field_length="255" description="International telephone calling code"/>
+    <field field_name="cctld" field_type="VARCHAR" field_length="255" description="International country code top level domain"/>
+    <field field_name="ordering" field_type="INT" field_length="11" description=""/>
+    <field field_name="state" field_type="TINYINT" field_length="1" description=""/>
+    <field field_name="checked_out" field_type="INT" field_length="11" description=""/>
+    <field field_name="checked_out_time" field_type="DATETIME" description=""/>
+    <field field_name="created_by" field_type="INT" field_length="11" description=""/>
+  </table>
+  <table action="add" table_name="#__pedigree_dogs" storage_engine="InnoDB" collation="utf8_general_ci">
+    <field field_name="id" field_type="INT" field_length="11" is_autoincrement="1" description=""/>
+    <field field_name="name" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="id_sire" field_type="INT" field_length="11" description=""/>
+    <field field_name="id_dam" field_type="INT" field_length="11" description=""/>
+    <field field_name="sex" field_type="VARCHAR" field_length="1" description=""/>
+    <field field_name="birth_date" field_type="VARCHAR" field_length="255" description="Date of birth in (YYYY/MM/DD) format.  Partial dates are allowed, eg: (1974/01/DD)."/>
+    <field field_name="call_name" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="id_gallery_image" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="id_gallery_category" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="coi" field_type="VARCHAR" field_length="255" description="Coefficient of Inbreeding"/>
+    <field field_name="stud_number" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="brs_number" field_type="VARCHAR" field_length="255" description="Breed records supplement number"/>
+    <field field_name="atc_number" field_type="VARCHAR" field_length="255" description="Authority to Compete number"/>
+    <field field_name="id_color" field_type="INT" field_length="11" description=""/>
+    <field field_name="color_variations" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="id_pattern" field_type="INT" field_length="11" description=""/>
+    <field field_name="is_scented" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="is_smooth" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="is_bearded" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="titles_prefix" field_type="VARCHAR" field_length="255" description="All prefix titles which appear in front of the dog's name."/>
+    <field field_name="titles_suffix" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="awards" field_type="TEXT" description=""/>
+    <field field_name="microchip" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="dna_profile" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="chic_number" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="health_test_thyroid" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="health_test_elbow" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="health_test_hips" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="health_test_eyes" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="health_test_heart" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="health_notes" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="death_date" field_type="VARCHAR" field_length="255" description="Date of death in (YYYY/MM/DD) format.  Partial dates are allowed, eg: (1974/01/DD)."/>
+    <field field_name="death_cause" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="is_stud" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="stud_details" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="is_semen" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="videos" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="articles" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="notes" field_type="TEXT" description=""/>
+    <field field_name="source" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="ordering" field_type="INT" field_length="11" description=""/>
+    <field field_name="state" field_type="TINYINT" field_length="1" description=""/>
+    <field field_name="checked_out" field_type="INT" field_length="11" description=""/>
+    <field field_name="checked_out_time" field_type="DATETIME" description=""/>
+    <field field_name="created_by" field_type="INT" field_length="11" description=""/>
+  </table>
+  <table action="add" table_name="#__pedigree_dogs_delegation" storage_engine="InnoDB" collation="utf8_general_ci">
+    <field field_name="id" field_type="INT" field_length="11" is_autoincrement="1" description=""/>
+    <field field_name="id_dog" field_type="INT" field_length="11" description=""/>
+    <field field_name="id_user" field_type="INT" field_length="11" description=""/>
+    <field field_name="ordering" field_type="INT" field_length="11" description=""/>
+    <field field_name="state" field_type="TINYINT" field_length="1" description=""/>
+    <field field_name="checked_out" field_type="INT" field_length="11" description=""/>
+    <field field_name="checked_out_time" field_type="DATETIME" description=""/>
+    <field field_name="created_by" field_type="INT" field_length="11" description=""/>
+  </table>
+  <table action="add" table_name="#__pedigree_judging" storage_engine="InnoDB" collation="utf8_general_ci">
+    <field field_name="id" field_type="INT" field_length="11" is_autoincrement="1" description=""/>
+    <field field_name="id_person" field_type="INT" field_length="11" description="Judge"/>
+    <field field_name="id_country" field_type="INT" field_length="11" description="Country of judging assignment"/>
+    <field field_name="date" field_type="DATE" description="Date of judging assignment"/>
+    <field field_name="notes" field_type="TEXT" description="Additional notes"/>
+    <field field_name="ordering" field_type="INT" field_length="11" description=""/>
+    <field field_name="state" field_type="TINYINT" field_length="1" description=""/>
+    <field field_name="checked_out" field_type="INT" field_length="11" description=""/>
+    <field field_name="checked_out_time" field_type="DATETIME" description=""/>
+    <field field_name="created_by" field_type="INT" field_length="11" description=""/>
+  </table>
+  <table action="add" table_name="#__pedigree_owners" storage_engine="InnoDB" collation="utf8_general_ci">
+    <field field_name="id" field_type="INT" field_length="11" is_autoincrement="1" description=""/>
+    <field field_name="id_person" field_type="INT" field_length="11" description=""/>
+    <field field_name="id_dog" field_type="INT" field_length="11" description=""/>
+    <field field_name="is_primary" field_type="TINYINT" field_length="1" description=""/>
+    <field field_name="date_start" field_type="DATE" description=""/>
+    <field field_name="date_end" field_type="DATE" description=""/>
+    <field field_name="ordering" field_type="INT" field_length="11" description=""/>
+    <field field_name="state" field_type="TINYINT" field_length="1" description=""/>
+    <field field_name="checked_out" field_type="INT" field_length="11" description=""/>
+    <field field_name="checked_out_time" field_type="DATETIME" description=""/>
+    <field field_name="created_by" field_type="INT" field_length="11" description=""/>
+  </table>
+  <table action="add" table_name="#__pedigree_registrations" storage_engine="InnoDB" collation="utf8_general_ci">
+    <field field_name="id" field_type="INT" field_length="11" is_autoincrement="1" description=""/>
+    <field field_name="id_dog" field_type="INT" field_length="11" description=""/>
+    <field field_name="id_country" field_type="INT" field_length="11" description=""/>
+    <field field_name="is_primary" field_type="VARCHAR" field_length="255" description="Is this the primary country of registration and residence?"/>
+    <field field_name="registration_number" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="registration_name" field_type="VARCHAR" field_length="255" description="Alternate registration name.  Leave blank if same as regular name."/>
+    <field field_name="verified" field_type="VARCHAR" field_length="255" description="Verified online or in print"/>
+    <field field_name="notes" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="ordering" field_type="INT" field_length="11" description=""/>
+    <field field_name="state" field_type="TINYINT" field_length="1" description=""/>
+    <field field_name="checked_out" field_type="INT" field_length="11" description=""/>
+    <field field_name="checked_out_time" field_type="DATETIME" description=""/>
+    <field field_name="created_by" field_type="INT" field_length="11" description=""/>
+  </table>
+  <table action="add" table_name="#__pedigree_people_delegation" storage_engine="InnoDB" collation="utf8_general_ci">
+    <field field_name="id" field_type="INT" field_length="11" is_autoincrement="1" description=""/>
+    <field field_name="id_person" field_type="INT" field_length="11" description=""/>
+    <field field_name="id_user" field_type="INT" field_length="11" description=""/>
+    <field field_name="ordering" field_type="INT" field_length="11" description=""/>
+    <field field_name="state" field_type="TINYINT" field_length="1" description=""/>
+    <field field_name="checked_out" field_type="INT" field_length="11" description=""/>
+    <field field_name="checked_out_time" field_type="DATETIME" description=""/>
+    <field field_name="created_by" field_type="INT" field_length="11" description=""/>
+  </table>
+  <table action="add" table_name="#__pedigree_people" storage_engine="InnoDB" collation="utf8_general_ci">
+    <field field_name="id" field_type="INT" field_length="11" is_autoincrement="1" description=""/>
+    <field field_name="first_name" field_type="VARCHAR" field_length="255" description="Person's first name."/>
+    <field field_name="last_name" field_type="VARCHAR" field_length="255" description="Person's last name."/>
+    <field field_name="address1" field_type="VARCHAR" field_length="255" description="Person's address, first line."/>
+    <field field_name="address2" field_type="VARCHAR" field_length="255" description="Person's address, second line."/>
+    <field field_name="city" field_type="VARCHAR" field_length="255" description="City of residence"/>
+    <field field_name="province" field_type="VARCHAR" field_length="255" description="State or province of residence"/>
+    <field field_name="postal_code" field_type="VARCHAR" field_length="255" description="Postal or zip code of residence"/>
+    <field field_name="id_country" field_type="INT" field_length="11" description="Country of residence."/>
+    <field field_name="home_phone" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="email" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="website" field_type="VARCHAR" field_length="255" description="Person/Kennel website address."/>
+    <field field_name="fb_profile" field_type="VARCHAR" field_length="255" description="Facebook profile address"/>
+    <field field_name="kennel_name" field_type="VARCHAR" field_length="255" description="Person's kennel name."/>
+    <field field_name="notes" field_type="TEXT" description="Any additional information."/>
+    <field field_name="is_judge" field_type="VARCHAR" field_length="255" description="Check if this person is a judge."/>
+    <field field_name="judge_info" field_type="TEXT" description="Information about judging history can go here."/>
+    <field field_name="ordering" field_type="INT" field_length="11" description=""/>
+    <field field_name="state" field_type="TINYINT" field_length="1" description=""/>
+    <field field_name="checked_out" field_type="INT" field_length="11" description=""/>
+    <field field_name="checked_out_time" field_type="DATETIME" description=""/>
+    <field field_name="created_by" field_type="INT" field_length="11" description=""/>
+  </table>
+  <table action="add" table_name="#__pedigree_patterns" storage_engine="InnoDB" collation="utf8_general_ci">
+    <field field_name="id" field_type="INT" field_length="11" is_autoincrement="1" description=""/>
+    <field field_name="pattern" field_type="VARCHAR" field_length="255" description=""/>
+    <field field_name="ordering" field_type="INT" field_length="11" description=""/>
+    <field field_name="state" field_type="TINYINT" field_length="1" description=""/>
+    <field field_name="checked_out" field_type="INT" field_length="11" description=""/>
+    <field field_name="checked_out_time" field_type="DATETIME" description=""/>
+    <field field_name="created_by" field_type="INT" field_length="11" description=""/>
+  </table>
+</component>

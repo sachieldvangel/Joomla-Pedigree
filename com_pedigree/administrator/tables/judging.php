@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version     1.0.2
+ * @version     1.0.3
  * @package     com_pedigree
  * @copyright   Copyright (C) 2014. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -78,33 +78,33 @@ class PedigreeTablejudging extends JTable {
             $registry->loadArray($array['metadata']);
             $array['metadata'] = (string) $registry;
         }
-        if(!JFactory::getUser()->authorise('core.admin', 'com_pedigree.judging.'.$array['id'])){
-            $actions = JFactory::getACL()->getActions('com_pedigree','judging');
-            $default_actions = JFactory::getACL()->getAssetRules('com_pedigree.judging.'.$array['id'])->getData();
+        if (!JFactory::getUser()->authorise('core.admin', 'com_pedigree.judging.' . $array['id'])) {
+            $actions = JFactory::getACL()->getActions('com_pedigree', 'judging');
+            $default_actions = JFactory::getACL()->getAssetRules('com_pedigree.judging.' . $array['id'])->getData();
             $array_jaccess = array();
-            foreach($actions as $action){
+            foreach ($actions as $action) {
                 $array_jaccess[$action->name] = $default_actions[$action->name];
             }
             $array['rules'] = $this->JAccessRulestoArray($array_jaccess);
         }
         //Bind the rules for ACL where supported.
-		if (isset($array['rules']) && is_array($array['rules'])) {
-			$this->setRules($array['rules']);
-		}
+        if (isset($array['rules']) && is_array($array['rules'])) {
+            $this->setRules($array['rules']);
+        }
 
         return parent::bind($array, $ignore);
     }
-    
+
     /**
      * This function convert an array of JAccessRule objects into an rules array.
      * @param type $jaccessrules an arrao of JAccessRule objects.
      */
-    private function JAccessRulestoArray($jaccessrules){
+    private function JAccessRulestoArray($jaccessrules) {
         $rules = array();
-        foreach($jaccessrules as $action => $jaccess){
+        foreach ($jaccessrules as $action => $jaccess) {
             $actions = array();
-            foreach($jaccess->getData() as $group => $allow){
-                $actions[$group] = ((bool)$allow);
+            foreach ($jaccess->getData() as $group => $allow) {
+                $actions[$group] = ((bool) $allow);
             }
             $rules[$action] = $actions;
         }
@@ -198,24 +198,24 @@ class PedigreeTablejudging extends JTable {
         $this->setError('');
         return true;
     }
-    
+
     /**
-      * Define a namespaced asset name for inclusion in the #__assets table
-      * @return string The asset name 
-      *
-      * @see JTable::_getAssetName 
-    */
+     * Define a namespaced asset name for inclusion in the #__assets table
+     * @return string The asset name 
+     *
+     * @see JTable::_getAssetName 
+     */
     protected function _getAssetName() {
         $k = $this->_tbl_key;
         return 'com_pedigree.judging.' . (int) $this->$k;
     }
- 
+
     /**
-      * Returns the parent asset's id. If you have a tree structure, retrieve the parent's id using the external key field
-      *
-      * @see JTable::_getAssetParentId 
-    */
-    protected function _getAssetParentId(JTable $table = null, $id = null){
+     * Returns the parent asset's id. If you have a tree structure, retrieve the parent's id using the external key field
+     *
+     * @see JTable::_getAssetParentId 
+     */
+    protected function _getAssetParentId(JTable $table = null, $id = null) {
         // We will retrieve the parent-asset from the Asset-table
         $assetParent = JTable::getInstance('Asset');
         // Default: if no asset-parent can be found we take the global asset
@@ -223,12 +223,20 @@ class PedigreeTablejudging extends JTable {
         // The item has the component as asset-parent
         $assetParent->loadByName('com_pedigree');
         // Return the found asset-parent-id
-        if ($assetParent->id){
-            $assetParentId=$assetParent->id;
+        if ($assetParent->id) {
+            $assetParentId = $assetParent->id;
         }
         return $assetParentId;
     }
-    
-    
+
+    public function delete($pk = null) {
+        $this->load($pk);
+        $result = parent::delete($pk);
+        if ($result) {
+            
+            
+        }
+        return $result;
+    }
 
 }

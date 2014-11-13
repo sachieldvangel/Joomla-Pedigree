@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+  <fieldset name="general" label="COM_PEDIGREE_FORM_LBL_DOG_TAB_GENERAL">
+    <field id="filter_name" name="name" type="text" class="" title="COM_PEDIGREE_FORM_LBL_DOG_NAME" label="COM_PEDIGREE_FORM_LBL_DOG_NAME" description="COM_PEDIGREE_FORM_DESC_DOG_NAME" hint="COM_PEDIGREE_FORM_HINT_DOG_NAME" value="" />
+	<field id="filter_sire" name="sire" type="text" class="" title="COM_PEDIGREE_FORM_LBL_DOG_SIRE" label="COM_PEDIGREE_FORM_LBL_DOG_SIRE" description="COM_PEDIGREE_FORM_DESC_DOG_SIRE" hint="COM_PEDIGREE_FORM_HINT_DOG_SIRE" value="" />
+	<field id="filter_dam" name="dam" type="text" class="" title="COM_PEDIGREE_FORM_LBL_DOG_DAM" label="COM_PEDIGREE_FORM_LBL_DOG_DAM" description="COM_PEDIGREE_FORM_DESC_DOG_DAM" hint="COM_PEDIGREE_FORM_HINT_DOG_DAM" value="" />
+	<field id="filter_registration" name="registration" type="text" class="" title="COM_PEDIGREE_FORM_LBL_DOG_REGISTRATION" label="COM_PEDIGREE_FORM_LBL_DOG_REGISTRATION" description="COM_PEDIGREE_FORM_DESC_DOG_REGISTRATION" hint="COM_PEDIGREE_FORM_HINT_DOG_REGISTRATION" value="" />
+	<field id="filter_breeder" name="breeder" type="text" class="" title="COM_PEDIGREE_FORM_LBL_DOG_BREEDER" label="COM_PEDIGREE_FORM_LBL_DOG_BREEDER" description="COM_PEDIGREE_FORM_DESC_DOG_BREEDER" hint="COM_PEDIGREE_FORM_HINT_DOG_BREEDER" value="" />
+	<field id="filter_owner" name="owner" type="text" class="" title="COM_PEDIGREE_FORM_LBL_DOG_OWNER" label="COM_PEDIGREE_FORM_LBL_DOG_OWNER" description="COM_PEDIGREE_FORM_DESC_DOG_OWNER" hint="COM_PEDIGREE_FORM_HINT_DOG_OWNER" value="" />
+    <field id="filter_sex" name="sex" type="list" label="COM_PEDIGREE_FORM_LBL_DOG_SEX" description="COM_PEDIGREE_FORM_DESC_DOG_SEX" menu_published="0" filter="raw" hint="COM_PEDIGREE_FORM_HINT_DOG_SEX" onchange="this.form.submit();">
+      <option value="">COM_PEDIGREE_FORM_LBL_DOG_SEX_FILTER</option>
+      <option value="1">COM_PEDIGREE_FORM_LBL_DOG_SEX_OPTION_1</option>
+      <option value="2">COM_PEDIGREE_FORM_LBL_DOG_SEX_OPTION_2</option>
+    </field>
+    <field id="filter_birth_date" name="birth_date" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_BIRTH_DATE" description="COM_PEDIGREE_FORM_DESC_DOG_BIRTH_DATE" menu_published="0" filter="string" maxlength="10" hint="COM_PEDIGREE_FORM_HINT_DOG_BIRTH_DATE" />
+    <field id="filter_call_name" name="call_name" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_CALL_NAME" description="COM_PEDIGREE_FORM_DESC_DOG_CALL_NAME" menu_published="0" filter="string" maxlength="50" hint="COM_PEDIGREE_FORM_HINT_DOG_CALL_NAME"  />
+    <field id="filter_id_color" name="id_color" type="sql" class="inputbox hide" label="COM_PEDIGREE_FORM_LBL_DOG_ID_COLOR" description="COM_PEDIGREE_FORM_DESC_DOG_ID_COLOR" query="SELECT '' AS `id`, '- Please select -' AS `color` UNION SELECT `id`, `color` FROM `#__pedigree_colors`" key_field="id" value_field="color" onchange="this.form.submit();" />
+    <field id="filter_color_variations" name="color_variations" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_COLOR_VARIATIONS" description="COM_PEDIGREE_FORM_DESC_DOG_COLOR_VARIATIONS" menu_published="0" filter="string" maxlength="100" hint="COM_PEDIGREE_FORM_HINT_DOG_COLOR_VARIATIONS" />
+    <field id="filter_id_pattern" name="id_pattern" type="sql" class="inputbox hide" label="COM_PEDIGREE_FORM_LBL_DOG_ID_PATTERN" description="COM_PEDIGREE_FORM_DESC_DOG_ID_PATTERN" query="SELECT '' AS `id`, '- Please select -' AS `pattern` UNION SELECT `id`, `pattern` FROM `#__pedigree_patterns`" key_field="id" value_field="pattern" onchange="this.form.submit();" />
+    <field id="filter_titles_prefix" name="titles_prefix" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_TITLES_PREFIX" description="COM_PEDIGREE_FORM_DESC_DOG_TITLES_PREFIX" menu_published="0" filter="string" maxlength="255" hint="COM_PEDIGREE_FORM_HINT_DOG_TITLES_PREFIX" />
+    <field id="filter_titles_suffix" name="titles_suffix" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_TITLES_SUFFIX" description="COM_PEDIGREE_FORM_DESC_DOG_TITLES_SUFFIX" menu_published="0" filter="string" maxlength="255" hint="COM_PEDIGREE_FORM_HINT_DOG_TITLES_SUFFIX" />
+  </fieldset>
+  
+  <fieldset name="health" label="COM_PEDIGREE_FORM_LBL_DOG_TAB_HEALTH">
+    <!--<field id="filter_coi" name="coi" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_COI" description="COM_PEDIGREE_FORM_DESC_DOG_COI" menu_published="0" filter="float" /> -->
+    <field id="filter_microchip" name="microchip" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_MICROCHIP" description="COM_PEDIGREE_FORM_DESC_DOG_MICROCHIP"  menu_published="0" filter="alnum" hint="COM_PEDIGREE_FORM_HINT_DOG_MICROCHIP" />
+    <field id="filter_dna_profile" name="dna_profile" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_DNA_PROFILE" description="COM_PEDIGREE_FORM_DESC_DOG_DNA_PROFILE"  menu_published="0" filter="string" maxlength="100" hint="COM_PEDIGREE_FORM_HINT_DOG_DNA_PROFILE" />
+    <field id="filter_chic_number" name="chic_number" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_CHIC_NUMBER" description="COM_PEDIGREE_FORM_DESC_DOG_CHIC_NUMBER"  menu_published="0" filter="string" maxlength="10" hint="COM_PEDIGREE_FORM_HINT_DOG_CHIC_NUMBER" />
+    <field id="filter_health_test_thyroid" name="health_test_thyroid" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_HEALTH_TEST_THYROID" description="COM_PEDIGREE_FORM_DESC_DOG_HEALTH_TEST_THYROID"  menu_published="0" filter="string" maxlength="50" hint="COM_PEDIGREE_FORM_HINT_DOG_HEALTH_TEST_THYROID" />
+    <field id="filter_health_test_elbow" name="health_test_elbow" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_HEALTH_TEST_ELBOW" description="COM_PEDIGREE_FORM_DESC_DOG_HEALTH_TEST_ELBOW"  menu_published="0" filter="string" maxlength="50" hint="COM_PEDIGREE_FORM_HINT_DOG_HEALTH_TEST_ELBOW" />
+    <field id="filter_health_test_hips" name="health_test_hips" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_HEALTH_TEST_HIPS" description="COM_PEDIGREE_FORM_DESC_DOG_HEALTH_TEST_HIPS"  menu_published="0" filter="string" maxlength="50" hint="COM_PEDIGREE_FORM_HINT_DOG_HEALTH_TEST_HIPS" />
+    <field id="filter_health_test_eyes" name="health_test_eyes" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_HEALTH_TEST_EYES" description="COM_PEDIGREE_FORM_DESC_DOG_HEALTH_TEST_EYES"  menu_published="0" filter="string" maxlength="50" hint="COM_PEDIGREE_FORM_HINT_DOG_HEALTH_TEST_EYES" />
+    <field id="filter_health_test_heart" name="health_test_heart" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_HEALTH_TEST_HEART" description="COM_PEDIGREE_FORM_DESC_DOG_HEALTH_TEST_HEART"  menu_published="0" filter="string" maxlength="50" />
+    <field id="filter_health_notes" name="health_notes" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_HEALTH_NOTES" description="COM_PEDIGREE_FORM_DESC_DOG_HEALTH_NOTES"  menu_published="0" filter="string" hint="COM_PEDIGREE_FORM_HINT_DOG_NOTES" />
+    <field id="filter_death_date" name="death_date" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_DEATH_DATE" description="COM_PEDIGREE_FORM_DESC_DOG_DEATH_DATE"  menu_published="0" filter="string" maxlength="10" hint="COM_PEDIGREE_FORM_HINT_DOG_DEATH_DATE" />
+    <field id="filter_death_cause" name="death_cause" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_DEATH_CAUSE" description="COM_PEDIGREE_FORM_DESC_DOG_DEATH_CAUSE"  menu_published="0" filter="string" maxlength="255" hint="COM_PEDIGREE_FORM_HINT_DOG_DEATH_CAUSE" />
+    <field id="filter_is_stud" name="is_stud" type="list" label="COM_PEDIGREE_FORM_LBL_DOG_IS_STUD" description="COM_PEDIGREE_FORM_DESC_DOG_IS_STUD" menu_published="0" filter="raw" onchange="this.form.submit();" >
+      <option value="">COM_PEDIGREE_FORM_LBL_DOG_IS_STUD_FILTER</option>
+      <option value="1">JYES</option>
+      <option value="0">JNO</option>
+    </field>
+    <field id="filter_stud_details" name="stud_details" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_STUD_DETAILS" description="COM_PEDIGREE_FORM_DESC_DOG_STUD_DETAILS"  menu_published="0" filter="string" hint="COM_PEDIGREE_FORM_HINT_DOG_STUD_DETAILS" />
+    <field id="filter_is_semen" name="is_semen" type="list" label="COM_PEDIGREE_FORM_LBL_DOG_IS_SEMEN" description="COM_PEDIGREE_FORM_DESC_DOG_IS_SEMEN" menu_published="0" filter="raw" onchange="this.form.submit();">
+      <option value="">COM_PEDIGREE_FORM_LBL_DOG_IS_SEMEN_FILTER</option>
+      <option value="1">JYES</option>
+      <option value="0">JNO</option>
+    </field>
+  </fieldset>
+  
+  <fieldset name="additional" label="COM_PEDIGREE_FORM_LBL_DOG_TAB_ADDITIONAL">
+    <field id="filter_awards" name="awards" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_AWARDS" description="COM_PEDIGREE_FORM_DESC_DOG_AWARDS"  menu_published="0" filter="string" maxlength="50" hint="COM_PEDIGREE_FORM_HINT_DOG_AWARDS" />
+    <field id="filter_is_scented" name="is_scented" type="list" label="COM_PEDIGREE_FORM_LBL_DOG_IS_SCENTED" description="COM_PEDIGREE_FORM_DESC_DOG_IS_SCENTED" menu_published="0" filter="raw" onchange="this.form.submit();">
+      <option value="">COM_PEDIGREE_FORM_LBL_DOG_IS_SCENTED_FILTER</option>
+      <option value="1">JYES</option>
+      <option value="0">JNO</option>
+    </field>
+    <field id="filter_is_smooth" name="is_smooth" type="list" label="COM_PEDIGREE_FORM_LBL_DOG_IS_SMOOTH" description="COM_PEDIGREE_FORM_DESC_DOG_IS_SMOOTH" menu_published="0" filter="raw" onchange="this.form.submit();">
+      <option value="">COM_PEDIGREE_FORM_LBL_DOG_IS_SMOOTH_FILTER</option>
+      <option value="1">JYES</option>
+      <option value="0">JNO</option>
+    </field>
+    <field id="filter_is_bearded" name="is_bearded" type="list" label="COM_PEDIGREE_FORM_LBL_DOG_IS_BEARDED" description="COM_PEDIGREE_FORM_DESC_DOG_IS_BEARDED" menu_published="0" filter="raw" onchange="this.form.submit();">
+      <option value="">COM_PEDIGREE_FORM_LBL_DOG_IS_BEARDED_FILTER</option>
+      <option value="1">JYES</option>
+      <option value="0">JNO</option>
+    </field>
+    <field id="filter_stud_number" name="stud_number" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_STUD_NUMBER" description="COM_PEDIGREE_FORM_DESC_DOG_STUD_NUMBER" menu_published="0" filter="string" maxlength="100" hint="COM_PEDIGREE_FORM_HINT_DOG_STUD_NUMBER" />
+    <field id="filter_brs_number" name="brs_number" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_BRS_NUMBER" description="COM_PEDIGREE_FORM_DESC_DOG_BRS_NUMBER" menu_published="0" filter="string" maxlength="20" hint="COM_PEDIGREE_FORM_HINT_DOG_BRS_NUMBER" />
+    <field id="filter_atc_number" name="atc_number" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_ATC_NUMBER" description="COM_PEDIGREE_FORM_DESC_DOG_ATC_NUMBER" menu_published="0" filter="string" maxlength="50" hint="COM_PEDIGREE_FORM_HINT_DOG_ATC_NUMBER"  />
+    <field id="filter_videos" name="videos" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_VIDEOS" description="COM_PEDIGREE_FORM_DESC_DOG_VIDEOS"  menu_published="0" filter="string" maxlength="255" hint="COM_PEDIGREE_FORM_HINT_DOG_VIDEOS" />
+    <field id="filter_articles" name="articles" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_ARTICLES" description="COM_PEDIGREE_FORM_DESC_DOG_ARTICLES"  menu_published="0" filter="string" maxlength="255" hint="COM_PEDIGREE_FORM_HINT_DOG_ARTICLES" />
+    <field id="filter_notes" name="notes" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_NOTES" description="COM_PEDIGREE_FORM_DESC_DOG_NOTES"  menu_published="0" filter="string" hint="COM_PEDIGREE_FORM_HINT_DOG_NOTES" />
+    <field id="filter_source" name="source" type="text" label="COM_PEDIGREE_FORM_LBL_DOG_SOURCE" description="COM_PEDIGREE_FORM_DESC_DOG_SOURCE"  menu_published="0" filter="string" maxlength="255" hint="COM_PEDIGREE_FORM_HINT_DOG_SOURCE" />
+  </fieldset>
+</form>

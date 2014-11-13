@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `#__pedigree_dogs` (
 `name` VARCHAR(255)  NOT NULL ,
 `id_sire` INT NOT NULL ,
 `id_dam` INT NOT NULL ,
-`sex` VARCHAR(255)  NOT NULL ,
+`sex` VARCHAR(1)  NOT NULL ,
 `birth_date` VARCHAR(10)  NOT NULL ,
 `call_name` VARCHAR(50)  NOT NULL ,
 `id_gallery_image` VARCHAR(255)  NOT NULL ,

@@ -1,368 +1,342 @@
 <?php
+
 /**
- * @version     1.0.2
+ * @version     1.0.3
  * @package     com_pedigree
  * @copyright   Copyright (C) 2014. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  * @author      Eddie Kominek <eddie@kominekafghans.com> - http://www.kominekafghans.com/
  */
-
 // No direct access.
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.modelform');
+jimport('joomla.application.component.modelitem');
 jimport('joomla.event.dispatcher');
 
 /**
  * Pedigree model.
  */
-class PedigreeModelDog extends JModelForm
-{
-    
-    var $_item = null;
-    
-	/**
-	 * Method to auto-populate the model state.
-	 *
-	 * Note. Calling getState in this method will result in recursion.
-	 *
-	 * @since	1.6
-	 */
-	protected function populateState()
-	{
-		$app = JFactory::getApplication('com_pedigree');
+class PedigreeModelDog extends JModelItem {
 
-		// Load state from the request userState on edit or from the passed variable on default
-        if (JFactory::getApplication()->input->get('layout') == 'edit') {
-            $id = JFactory::getApplication()->getUserState('com_pedigree.edit.dog.id');
+    /**
+     * Method to auto-populate the model state.
+     *
+     * Note. Calling getState in this method will result in recursion.
+     *
+     * @since	1.6
+     */
+    protected function populateState() {
+        $app = JFactory::getApplication('com_pedigree');
+
+        // Load state from the request userState on edit or from the passed variable on default
+        if ($app->input->get('layout') == 'edit') {
+            $id = $app->getUserState('com_pedigree.edit.dog.id');
         } else {
-            $id = JFactory::getApplication()->input->get('id');
-            JFactory::getApplication()->setUserState('com_pedigree.edit.dog.id', $id);
+            $id = $app->input->get('id');
+            $app->setUserState('com_pedigree.edit.dog.id', $id);
         }
-		$this->setState('dog.id', $id);
+        $this->setState('dog.id', $id);
 
-		// Load the parameters.
-		$params = $app->getParams();
+        // Load the parameters.
+        $params = $app->getParams();
         $params_array = $params->toArray();
-        if(isset($params_array['item_id'])){
+        if (isset($params_array['item_id'])) {
             $this->setState('dog.id', $params_array['item_id']);
         }
-		$this->setState('params', $params);
+        $this->setState('params', $params);
+    }
 
-	}
-        
+    /**
+     * Method to get an ojbect.
+     *
+     * @param	integer	The id of the object to get.
+     *
+     * @return	mixed	Object on success, false on failure.
+     */
+    public function &getData($id = null) {
+        if ($this->_item === null) {
+            $this->_item = false;
 
-	/**
-	 * Method to get an ojbect.
-	 *
-	 * @param	integer	The id of the object to get.
-	 *
-	 * @return	mixed	Object on success, false on failure.
-	 */
-	public function &getData($id = null)
-	{
-		if ($this->_item === null)
-		{
-			$this->_item = false;
+            if (empty($id)) {
+                $id = $this->getState('dog.id');
+            }
 
-			if (empty($id)) {
-				$id = $this->getState('dog.id');
-			}
+            // Get a level row instance.
+            $table = $this->getTable();
 
-			// Get a level row instance.
-			$table = $this->getTable();
+            // Attempt to load the row.
+            if ($table->load($id)) {
+                // Check published state.
+                if ($published = $this->getState('filter.published')) {
+                    if ($table->state != $published) {
+                        return $this->_item;
+                    }
+                }
 
-			// Attempt to load the row.
-			if ($table->load($id))
-			{
-				// Check published state.
-				if ($published = $this->getState('filter.published'))
-				{
-					if ($table->state != $published) {
-						return $this->_item;
-					}
-				}
-
-				// Convert the JTable to a clean JObject.
-				$properties = $table->getProperties(1);
-				$this->_item = JArrayHelper::toObject($properties, 'JObject');
-			} elseif ($error = $table->getError()) {
-				$this->setError($error);
-			}
+                // Convert the JTable to a clean JObject.
+                $properties = $table->getProperties(1);
+                $this->_item = JArrayHelper::toObject($properties, 'JObject');
+            } elseif ($error = $table->getError()) {
+                $this->setError($error);
+            }
+        }
+		
+		// Sex
+		
+		$this->_item->sex_name = JText::_('COM_PEDIGREE_DOGS_SEX_OPTION_' . $this->_item->sex);
+		
+		/**
+			Sire
+		**/
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$this->_item->registrations = array();
+		$query
+				->select('a.`name`')
+				->from('#__pedigree_dogs a')
+				->where('a.`id` = ' . $db->quote($db->escape($this->_item->id_sire)));
+		$db->setQuery($query);
+		$result = $db->loadObject();
+		if ($result) {				
+			$this->_item->sire_name = (string) $result->name;
+		}
+		
+		/**
+			Dam
+		**/
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$this->_item->registrations = array();
+		$query
+				->select('a.`name`')
+				->from('#__pedigree_dogs a')
+				->where('a.`id` = ' . $db->quote($db->escape($this->_item->id_dam)));
+		$db->setQuery($query);
+		$result = $db->loadObject();
+		if ($result) {				
+			$this->_item->dam_name = (string) $result->name;
+		}
+		
+		/**
+			Registrations
+		**/
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$this->_item->registrations = array();
+		$query
+				->select('a.`registration_number`, a.`id_country`, b.`iso3`')
+				->from('#__pedigree_registrations a')
+				->innerJoin('#__pedigree_countries b ON a.`id_country` = b.`id`')
+				->where('a.`id_dog` = ' . $db->quote($db->escape($this->_item->id)))
+				->order('a.`is_primary` DESC');
+		$db->setQuery($query);
+		$results = $db->loadObjectList();
+		if ($results) {				
+			foreach ($results as $row){
+				$this->_item->registrations[] = $row;
+			}				
+		}
+		
+		/**
+			Breeders
+		**/
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$this->_item->breeders = array();
+		$query
+				->select('a.`id`, a.`is_primary`, b.`first_name`, b.`last_name`, b.`kennel_name`, b.`id_country`, c.`iso3`')
+				->from('#__pedigree_breeders a')
+				->leftJoin('#__pedigree_people b ON a.`id_person` = b.`id`')
+				->leftJoin('#__pedigree_countries c ON b.`id_country` = c.`id`')
+				->where('a.`id_dog`= '.$this->_item->id)
+				->order('a.`is_primary` DESC, b.`last_name`, b.`first_name`');
+		$db->setQuery($query);
+		$results = $db->loadObjectList();
+		if ($results) {				
+			foreach ($results as $row){
+				$this->_item->breeders[] = $row;
+			}				
+		}
+		
+		/**
+			Owners
+		**/
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$this->_item->owners = array();
+		$query
+				->select('a.`id`, a.`is_primary`, b.`first_name`, b.`last_name`, b.`kennel_name`, b.`id_country`, c.`iso3`')
+				->from('#__pedigree_owners a')
+				->leftJoin('#__pedigree_people b ON a.`id_person` = b.`id`')
+				->leftJoin('#__pedigree_countries c ON b.`id_country` = c.`id`')
+				->where('a.`id_dog`= '.$this->_item->id)
+				->order('a.`is_primary` DESC, b.`last_name`, b.`first_name`');
+		$db->setQuery($query);
+		$results = $db->loadObjectList();
+		if ($results) {				
+			foreach ($results as $row){
+				$this->_item->owners[] = $row;
+			}				
 		}
 
-		return $this->_item;
-	}
-    
-	public function getTable($type = 'Dog', $prefix = 'PedigreeTable', $config = array())
-	{   
-        $this->addTablePath(JPATH_COMPONENT_ADMINISTRATOR.'/tables');
+		$this->_item->siblings = new stdClass();
+
+		/**
+			Full Siblings
+		**/
+		if ($this->_item->id_sire > 0 && $this->_item->id_dam > 0) {	
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
+			$this->_item->siblings->full = array();
+			$query
+					->select('a.`id`, a.`name`, a.`sex`, b.`registration_number`, a.`birth_date`, a.`id_color`, a.`id_pattern`, a.`brs_number`, a.`stud_number`')
+					->from('#__pedigree_dogs a')
+					->leftJoin('#__pedigree_registrations b ON (a.`id` = b.`id_dog` AND b.`is_primary`=1)')
+					->where('a.`id` != '.$db->quote($db->escape($this->_item->id)).' AND (a.`id_sire`= '.$db->quote($db->escape($this->_item->id_sire)).' AND a.`id_dam`= '.$db->quote($db->escape($this->_item->id_dam)).')')
+					->order('a.`name`');
+			$db->setQuery($query);
+			$results = $db->loadObjectList();
+			if ($results) {				
+				foreach ($results as $row){
+					$this->_item->siblings->full[] = $row;
+				}				
+			}
+		}
+		
+		/**
+			Half Siblings
+		**/
+		if ($this->_item->id_sire > 0 || $this->_item->id_dam > 0) {
+			$whereClause = '';
+			if ($this->_item->id_sire > 0 && $this->_item->id_dam > 0) {
+				$whereClause = '(a.`id_sire`= '.$db->quote($db->escape($this->_item->id_sire)).' XOR a.`id_dam`= '.$db->quote($db->escape($this->_item->id_dam)).')';
+			} else {
+				$whereClause = '(a.`id_sire`= '.$db->quote($db->escape($this->_item->id_sire)).' AND a.`id_dam`= '.$db->quote($db->escape($this->_item->id_dam)).')';
+			}
+			
+			if ($whereClause != '') {
+				$db = JFactory::getDbo();
+				$query = $db->getQuery(true);
+				$this->_item->siblings->half = array();
+				$query
+						->select('a.`id`, a.`name`, a.`sex`, b.`registration_number`, a.`birth_date`, a.`id_color`, a.`id_pattern`, a.`brs_number`, a.`stud_number`')
+						->from('#__pedigree_dogs a')
+						->leftJoin('#__pedigree_registrations b ON (a.`id` = b.`id_dog` AND b.`is_primary`=1)')
+						->where('a.`id` != '.$db->quote($db->escape($this->_item->id)).' AND '.$whereClause)
+						->order('a.`birth_date`, a.`name`');
+				$db->setQuery($query);
+				$results = $db->loadObjectList();
+				if ($results) {				
+					foreach ($results as $row){
+						$this->_item->siblings->half[] = $row;
+					}				
+				}
+			}
+		}
+        
+		/**
+			Offspring
+		**/
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$this->_item->offspring = array();
+		$query
+				->select('a.`id`, a.`name`, a.`sex`, b.`registration_number`, a.`birth_date`, a.`id_color`, a.`id_pattern`, a.`brs_number`, a.`stud_number`')
+				->from('#__pedigree_dogs a')
+				->leftJoin('#__pedigree_registrations b ON (a.`id` = b.`id_dog` AND b.`is_primary`=1)')
+				->where('a.`id_'.(($this->_item->sex==1) ? 'sire' : 'dam').'`= '.$db->quote($db->escape($this->_item->id)))
+				->order('a.`birth_date`, a.`name`');
+		$db->setQuery($query);
+		$results = $db->loadObjectList();
+		if ($results) {				
+			foreach ($results as $row){
+				$this->_item->offspring[] = $row;
+			}				
+		}	
+			
+		if ( isset($this->_item->created_by) ) {
+			$this->_item->created_by_name = JFactory::getUser($this->_item->created_by)->name;
+		}
+
+        return $this->_item;
+    }
+
+
+    public function getTable($type = 'Dog', $prefix = 'PedigreeTable', $config = array()) {
+        $this->addTablePath(JPATH_COMPONENT_ADMINISTRATOR . '/tables');
         return JTable::getInstance($type, $prefix, $config);
-	}     
+    }
 
-    
-	/**
-	 * Method to check in an item.
-	 *
-	 * @param	integer		The id of the row to check out.
-	 * @return	boolean		True on success, false on failure.
-	 * @since	1.6
-	 */
-	public function checkin($id = null)
-	{
-		// Get the id.
-		$id = (!empty($id)) ? $id : (int)$this->getState('dog.id');
+    /**
+     * Method to check in an item.
+     *
+     * @param	integer		The id of the row to check out.
+     * @return	boolean		True on success, false on failure.
+     * @since	1.6
+     */
+    public function checkin($id = null) {
+        // Get the id.
+        $id = (!empty($id)) ? $id : (int) $this->getState('dog.id');
 
-		if ($id) {
-            
-			// Initialise the table
-			$table = $this->getTable();
+        if ($id) {
 
-			// Attempt to check the row in.
+            // Initialise the table
+            $table = $this->getTable();
+
+            // Attempt to check the row in.
             if (method_exists($table, 'checkin')) {
                 if (!$table->checkin($id)) {
                     $this->setError($table->getError());
                     return false;
                 }
             }
-		}
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Method to check out an item for editing.
-	 *
-	 * @param	integer		The id of the row to check out.
-	 * @return	boolean		True on success, false on failure.
-	 * @since	1.6
-	 */
-	public function checkout($id = null)
-	{
-		// Get the user id.
-		$id = (!empty($id)) ? $id : (int)$this->getState('dog.id');
+    /**
+     * Method to check out an item for editing.
+     *
+     * @param	integer		The id of the row to check out.
+     * @return	boolean		True on success, false on failure.
+     * @since	1.6
+     */
+    public function checkout($id = null) {
+        // Get the user id.
+        $id = (!empty($id)) ? $id : (int) $this->getState('dog.id');
 
-		if ($id) {
-            
-			// Initialise the table
-			$table = $this->getTable();
+        if ($id) {
 
-			// Get the current user object.
-			$user = JFactory::getUser();
+            // Initialise the table
+            $table = $this->getTable();
 
-			// Attempt to check the row out.
+            // Get the current user object.
+            $user = JFactory::getUser();
+
+            // Attempt to check the row out.
             if (method_exists($table, 'checkout')) {
                 if (!$table->checkout($user->get('id'), $id)) {
                     $this->setError($table->getError());
                     return false;
                 }
             }
-		}
-
-		return true;
-	}    
-    
-	/**
-	 * Method to get the profile form.
-	 *
-	 * The base form is loaded from XML 
-     * 
-	 * @param	array	$data		An optional array of data for the form to interogate.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * @return	JForm	A JForm object on success, false on failure
-	 * @since	1.6
-	 */
-	public function getForm($data = array(), $loadData = true)
-	{
-		// Get the form.
-		$form = $this->loadForm('com_pedigree.dog', 'dog', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) {
-			return false;
-		}
-
-		return $form;
-	}
-
-	/**
-	 * Method to get the data that should be injected in the form.
-	 *
-	 * @return	mixed	The data for the form.
-	 * @since	1.6
-	 */
-	protected function loadFormData()
-	{
-		$data = $this->getData(); 
-        
-
-			if (isset($data->id_sire) && $data->id_sire != '') {
-				if(is_object($data->id_sire)){
-					$data->id_sire = JArrayHelper::fromObject($data->id_sire);
-				}
-				$values = (is_array($data->id_sire)) ? $data->id_sire : explode(',',$data->id_sire);
-
-				$textValue = array();
-				foreach ($values as $value){
-					$db = JFactory::getDbo();
-					$query = $db->getQuery(true);
-					$query
-							->select('name')
-							->from('`#__pedigree_dogs`')
-							->where('id = ' .$value);
-					$db->setQuery($query);
-					$results = $db->loadObject();
-					if ($results) {
-						$textValue[] = $results->name;
-					}
-				}
-
-			$data->id_sire = !empty($textValue) ? implode(', ', $textValue) : $data->id_sire;
-
-			}
-
-			if (isset($data->id_dam) && $data->id_dam != '') {
-				if(is_object($data->id_dam)){
-					$data->id_dam = JArrayHelper::fromObject($data->id_dam);
-				}
-				$values = (is_array($data->id_dam)) ? $data->id_dam : explode(',',$data->id_dam);
-
-				$textValue = array();
-				foreach ($values as $value){
-					$db = JFactory::getDbo();
-					$query = $db->getQuery(true);
-					$query
-							->select('name')
-							->from('`#__pedigree_dogs`')
-							->where('id = ' .$value);
-					$db->setQuery($query);
-					$results = $db->loadObject();
-					if ($results) {
-						$textValue[] = $results->name;
-					}
-				}
-
-			$data->id_dam = !empty($textValue) ? implode(', ', $textValue) : $data->id_dam;
-
-			}
-
-			if (isset($data->id_color) && $data->id_color != '') {
-				if(is_object($data->id_color)){
-					$data->id_color = JArrayHelper::fromObject($data->id_color);
-				}
-				$values = (is_array($data->id_color)) ? $data->id_color : explode(',',$data->id_color);
-
-				$textValue = array();
-				foreach ($values as $value){
-					$db = JFactory::getDbo();
-					$query = $db->getQuery(true);
-					$query
-							->select('color')
-							->from('`#__pedigree_colors`')
-							->where('id = ' .$value);
-					$db->setQuery($query);
-					$results = $db->loadObject();
-					if ($results) {
-						$textValue[] = $results->color;
-					}
-				}
-
-			$data->id_color = !empty($textValue) ? implode(', ', $textValue) : $data->id_color;
-
-			}
-
-			if (isset($data->id_pattern) && $data->id_pattern != '') {
-				if(is_object($data->id_pattern)){
-					$data->id_pattern = JArrayHelper::fromObject($data->id_pattern);
-				}
-				$values = (is_array($data->id_pattern)) ? $data->id_pattern : explode(',',$data->id_pattern);
-
-				$textValue = array();
-				foreach ($values as $value){
-					$db = JFactory::getDbo();
-					$query = $db->getQuery(true);
-					$query
-							->select('pattern')
-							->from('`#__pedigree_patterns`')
-							->where('id = ' .$value);
-					$db->setQuery($query);
-					$results = $db->loadObject();
-					if ($results) {
-						$textValue[] = $results->pattern;
-					}
-				}
-
-			$data->id_pattern = !empty($textValue) ? implode(', ', $textValue) : $data->id_pattern;
-
-			}
-        return $data;
-	}
-
-	/**
-	 * Method to save the form data.
-	 *
-	 * @param	array		The form data.
-	 * @return	mixed		The user id on success, false on failure.
-	 * @since	1.6
-	 */
-	public function save($data)
-	{
-		$id = (!empty($data['id'])) ? $data['id'] : (int)$this->getState('dog.id');
-        $state = (!empty($data['state'])) ? 1 : 0;
-        $user = JFactory::getUser();
-
-        if($id) {
-            //Check the user can edit this item
-            $authorised = $user->authorise('core.edit', 'com_pedigree.dog.'.$id) || $authorised = $user->authorise('core.edit.own', 'com_pedigree.dog.'.$id);
-            if($user->authorise('core.edit.state', 'com_pedigree.dog.'.$id) !== true && $state == 1){ //The user cannot edit the state of the item.
-                $data['state'] = 0;
-            }
-        } else {
-            //Check the user can create new items in this section
-            $authorised = $user->authorise('core.create', 'com_pedigree');
-            if($user->authorise('core.edit.state', 'com_pedigree.dog.'.$id) !== true && $state == 1){ //The user cannot edit the state of the item.
-                $data['state'] = 0;
-            }
         }
 
-        if ($authorised !== true) {
-            JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
-            return false;
-        }
-        
-        $table = $this->getTable();
-        if ($table->save($data) === true) {
-            return $id;
-        } else {
-            return false;
-        }
-        
-	}
-    
-     function delete($data)
-    {
-        $id = (!empty($data['id'])) ? $data['id'] : (int)$this->getState('dog.id');
-        if(JFactory::getUser()->authorise('core.delete', 'com_pedigree.dog.'.$id) !== true){
-            JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
-            return false;
-        }
-        $table = $this->getTable();
-        if ($table->delete($data['id']) === true) {
-            return $id;
-        } else {
-            return false;
-        }
-        
         return true;
     }
-    
-    function getCategoryName($id){
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
-        $query 
-            ->select('title')
-            ->from('#__categories')
-            ->where('id = ' . $id);
-        $db->setQuery($query);
-        return $db->loadObject();
+
+
+    public function publish($id, $state) {
+        $table = $this->getTable();
+        $table->load($id);
+        $table->state = $state;
+        return $table->store();
     }
-    
+
+    public function delete($id) {
+        $table = $this->getTable();
+        return $table->delete($id);
+    }
+
 }

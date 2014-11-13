@@ -1,6 +1,6 @@
 <?php
 /**
- * @version     1.0.2
+ * @version     1.0.3
  * @package     com_pedigree
  * @copyright   Copyright (C) 2014. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -21,7 +21,7 @@ $document->addStyleSheet('components/com_pedigree/assets/css/pedigree.css');
 ?>
 <script type="text/javascript">
     js = jQuery.noConflict();
-    js(document).ready(function(){
+    js(document).ready(function() {
         
 	js('input:hidden.id_person').each(function(){
 		var name = js(this).attr('name');
@@ -38,13 +38,13 @@ $document->addStyleSheet('components/com_pedigree/assets/css/pedigree.css');
 	});
 	js("#jform_id_dog").trigger("liszt:updated");
     });
-    
+
     Joomla.submitbutton = function(task)
     {
-        if(task == 'breeder.cancel'){
+        if (task == 'breeder.cancel') {
             Joomla.submitform(task, document.getElementById('breeder-form'));
         }
-        else{
+        else {
             
             if (task != 'breeder.cancel' && document.formvalidator.isValid(document.id('breeder-form'))) {
                 
@@ -58,11 +58,16 @@ $document->addStyleSheet('components/com_pedigree/assets/css/pedigree.css');
 </script>
 
 <form action="<?php echo JRoute::_('index.php?option=com_pedigree&layout=edit&id=' . (int) $this->item->id); ?>" method="post" enctype="multipart/form-data" name="adminForm" id="breeder-form" class="form-validate">
-    <div class="row-fluid">
-        <div class="span10 form-horizontal">
-            <fieldset class="adminform">
 
-                			<div class="control-group">
+    <div class="form-horizontal">
+        <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'general')); ?>
+
+        <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'general', JText::_('COM_PEDIGREE_TITLE_BREEDER', true)); ?>
+        <div class="row-fluid">
+            <div class="span10 form-horizontal">
+                <fieldset class="adminform">
+
+                    			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('id'); ?></div>
 				<div class="controls"><?php echo $this->form->getInput('id'); ?></div>
 			</div>
@@ -102,10 +107,14 @@ $document->addStyleSheet('components/com_pedigree/assets/css/pedigree.css');
 			</div>
 
 
-            </fieldset>
+                </fieldset>
+            </div>
         </div>
-
+        <?php echo JHtml::_('bootstrap.endTab'); ?>
         
+        
+
+        <?php echo JHtml::_('bootstrap.endTabSet'); ?>
 
         <input type="hidden" name="task" value="" />
         <?php echo JHtml::_('form.token'); ?>

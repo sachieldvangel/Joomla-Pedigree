@@ -6,16 +6,9 @@
             readonly="true" class="readonly"
             description="JGLOBAL_FIELD_ID_DESC" /> 
 
-       <field name="id_dog" type="sql" class="inputbox"
-        
+ <field name="id_dog" type="foreignkey" class="inputbox"
             label="COM_PEDIGREE_FORM_LBL_DELEGATION_ID_DOG"
-            description="COM_PEDIGREE_FORM_DESC_DELEGATION_ID_DOG" 
-        
-        
-        
-         required="true" 
-        query="SELECT '' AS `id`, '- Select Dog -' AS `name` UNION SELECT `id`, `name` FROM `#__pedigree_dogs`" key_field="id" value_field="name"
-         /> 
+            description="COM_PEDIGREE_FORM_DESC_DELEGATION_ID_DOG" input_type="list" table="#__pedigree_dogs" key_field="id" value_field="name"  required="true"  /> 
 
        <field name="id_user" type="user"
                 

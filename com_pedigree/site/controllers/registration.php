@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version     1.0.2
+ * @version     1.0.3
  * @package     com_pedigree
  * @copyright   Copyright (C) 2014. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -55,173 +55,85 @@ class PedigreeControllerRegistration extends PedigreeController {
      * @return	void
      * @since	1.6
      */
-    public function save() {
-        // Check for request forgeries.
-        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-
+    public function publish() {
         // Initialise variables.
         $app = JFactory::getApplication();
-        $model = $this->getModel('Registration', 'PedigreeModel');
 
-        // Get the user data.
-        $data = JFactory::getApplication()->input->get('jform', array(), 'array');
+        //Checking if the user can remove object
+        $user = JFactory::getUser();
+        if ($user->authorise('core.edit', 'com_pedigree') || $user->authorise('core.edit.state', 'com_pedigree')) {
+            $model = $this->getModel('Registration', 'PedigreeModel');
 
-        // Validate the posted data.
-        $form = $model->getForm();
-        if (!$form) {
-            JError::raiseError(500, $model->getError());
-            return false;
-        }
+            // Get the user data.
+            $id = $app->input->getInt('id');
+            $state = $app->input->getInt('state');
 
-        // Validate the posted data.
-        $data = $model->validate($form, $data);
+            // Attempt to save the data.
+            $return = $model->publish($id, $state);
 
-        // Check for errors.
-        if ($data === false) {
-            // Get the validation messages.
-            $errors = $model->getErrors();
-
-            // Push up to three validation messages out to the user.
-            for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++) {
-                if ($errors[$i] instanceof Exception) {
-                    $app->enqueueMessage($errors[$i]->getMessage(), 'warning');
-                } else {
-                    $app->enqueueMessage($errors[$i], 'warning');
-                }
+            // Check for errors.
+            if ($return === false) {
+                $this->setMessage(JText::sprintf('Save failed: %s', $model->getError()), 'warning');
             }
 
-            // Save the data in the session.
-            $app->setUserState('com_pedigree.edit.registration.data', JRequest::getVar('jform'), array());
+            // Clear the profile id from the session.
+            $app->setUserState('com_pedigree.edit.registration.id', null);
 
-            // Redirect back to the edit screen.
-            $id = (int) $app->getUserState('com_pedigree.edit.registration.id');
-            $this->setRedirect(JRoute::_('index.php?option=com_pedigree&view=registration&layout=edit&id=' . $id, false));
-            return false;
+            // Flush the data from the session.
+            $app->setUserState('com_pedigree.edit.registration.data', null);
+
+            // Redirect to the list screen.
+            $this->setMessage(JText::_('COM_PEDIGREE_ITEM_SAVED_SUCCESSFULLY'));
+            $menu = & JSite::getMenu();
+            $item = $menu->getActive();
+            $this->setRedirect(JRoute::_($item->link, false));
+        } else {
+            throw new Exception(500);
         }
-
-        // Attempt to save the data.
-        $return = $model->save($data);
-
-        // Check for errors.
-        if ($return === false) {
-            // Save the data in the session.
-            $app->setUserState('com_pedigree.edit.registration.data', $data);
-
-            // Redirect back to the edit screen.
-            $id = (int) $app->getUserState('com_pedigree.edit.registration.id');
-            $this->setMessage(JText::sprintf('Save failed', $model->getError()), 'warning');
-            $this->setRedirect(JRoute::_('index.php?option=com_pedigree&view=registration&layout=edit&id=' . $id, false));
-            return false;
-        }
-
-
-        // Check in the profile.
-        if ($return) {
-            $model->checkin($return);
-        }
-
-        // Clear the profile id from the session.
-        $app->setUserState('com_pedigree.edit.registration.id', null);
-
-        // Redirect to the list screen.
-        $this->setMessage(JText::_('COM_PEDIGREE_ITEM_SAVED_SUCCESSFULLY'));
-        $menu = & JSite::getMenu();
-        $item = $menu->getActive();
-        $this->setRedirect(JRoute::_($item->link, false));
-
-        // Flush the data from the session.
-        $app->setUserState('com_pedigree.edit.registration.data', null);
-    }
-
-    function cancel() {
-        $app = JFactory::getApplication();
-        $previousId = (int) $app->getUserState('com_raector_crm.edit.project.id');
-        if ($previousId) {
-            // Get the model.
-            $model = $this->getModel('Project', 'Raector_crmModel');
-            $model->checkin($previousId);
-        }
-        $menu = & JSite::getMenu();
-        $item = $menu->getActive();
-        $this->setRedirect(JRoute::_($item->link, false));
     }
 
     public function remove() {
-        // Check for request forgeries.
-        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
         // Initialise variables.
         $app = JFactory::getApplication();
-        $model = $this->getModel('Registration', 'PedigreeModel');
 
-        // Get the user data.
-        $data = JFactory::getApplication()->input->get('jform', array(), 'array');
+        //Checking if the user can remove object
+        $user = JFactory::getUser();
+        if ($user->authorise($user->authorise('core.delete', 'com_pedigree'))) {
+            $model = $this->getModel('Registration', 'PedigreeModel');
 
-        // Validate the posted data.
-        $form = $model->getForm();
-        if (!$form) {
-            JError::raiseError(500, $model->getError());
-            return false;
-        }
+            // Get the user data.
+            $id = $app->input->getInt('id', 0);
 
-        // Validate the posted data.
-        $data = $model->validate($form, $data);
+            // Attempt to save the data.
+            $return = $model->delete($id);
 
-        // Check for errors.
-        if ($data === false) {
-            // Get the validation messages.
-            $errors = $model->getErrors();
 
-            // Push up to three validation messages out to the user.
-            for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++) {
-                if ($errors[$i] instanceof Exception) {
-                    $app->enqueueMessage($errors[$i]->getMessage(), 'warning');
-                } else {
-                    $app->enqueueMessage($errors[$i], 'warning');
+            // Check for errors.
+            if ($return === false) {
+                $this->setMessage(JText::sprintf('Delete failed', $model->getError()), 'warning');
+            } else {
+                // Check in the profile.
+                if ($return) {
+                    $model->checkin($return);
                 }
+
+                // Clear the profile id from the session.
+                $app->setUserState('com_pedigree.edit.registration.id', null);
+
+                // Flush the data from the session.
+                $app->setUserState('com_pedigree.edit.registration.data', null);
+
+                $this->setMessage(JText::_('COM_PEDIGREE_ITEM_DELETED_SUCCESSFULLY'));
             }
 
-            // Save the data in the session.
-            $app->setUserState('com_pedigree.edit.registration.data', $data);
-
-            // Redirect back to the edit screen.
-            $id = (int) $app->getUserState('com_pedigree.edit.registration.id');
-            $this->setRedirect(JRoute::_('index.php?option=com_pedigree&view=registration&layout=edit&id=' . $id, false));
-            return false;
+            // Redirect to the list screen.
+            $menu = & JSite::getMenu();
+            $item = $menu->getActive();
+            $this->setRedirect(JRoute::_($item->link, false));
+        } else {
+            throw new Exception(500);
         }
-
-        // Attempt to save the data.
-        $return = $model->delete($data);
-
-        // Check for errors.
-        if ($return === false) {
-            // Save the data in the session.
-            $app->setUserState('com_pedigree.edit.registration.data', $data);
-
-            // Redirect back to the edit screen.
-            $id = (int) $app->getUserState('com_pedigree.edit.registration.id');
-            $this->setMessage(JText::sprintf('Delete failed', $model->getError()), 'warning');
-            $this->setRedirect(JRoute::_('index.php?option=com_pedigree&view=registration&layout=edit&id=' . $id, false));
-            return false;
-        }
-
-
-        // Check in the profile.
-        if ($return) {
-            $model->checkin($return);
-        }
-
-        // Clear the profile id from the session.
-        $app->setUserState('com_pedigree.edit.registration.id', null);
-
-        // Redirect to the list screen.
-        $this->setMessage(JText::_('COM_PEDIGREE_ITEM_DELETED_SUCCESSFULLY'));
-        $menu = & JSite::getMenu();
-        $item = $menu->getActive();
-        $this->setRedirect(JRoute::_($item->link, false));
-
-        // Flush the data from the session.
-        $app->setUserState('com_pedigree.edit.registration.data', null);
     }
 
 }

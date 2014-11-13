@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version     1.0.2
+ * @version     1.0.3
  * @package     com_pedigree
  * @copyright   Copyright (C) 2014. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -103,16 +103,15 @@ class PedigreeModelJudgings extends JModelList {
         // Select the required fields from the table.
         $query->select(
                 $this->getState(
-                        'list.select', 'a.*'
+                        'list.select', 'DISTINCT a.*'
                 )
         );
         $query->from('`#__pedigree_judging` AS a');
 
         
-    // Join over the users for the checked out user.
-    $query->select('uc.name AS editor');
-    $query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
-    
+		// Join over the users for the checked out user
+		$query->select("uc.name AS editor");
+		$query->join("LEFT", "#__users AS uc ON uc.id=a.checked_out");
 		// Join over the foreign key 'id_person'
 		$query->select('#__pedigree_people_1067774.last_name AS peoples_last_name_1067774');
 		$query->join('LEFT', '#__pedigree_people AS #__pedigree_people_1067774 ON #__pedigree_people_1067774.id = a.id_person');
@@ -124,14 +123,14 @@ class PedigreeModelJudgings extends JModelList {
 		$query->join('LEFT', '#__users AS created_by ON created_by.id = a.created_by');
 
         
-    // Filter by published state
-    $published = $this->getState('filter.state');
-    if (is_numeric($published)) {
-        $query->where('a.state = '.(int) $published);
-    } else if ($published === '') {
-        $query->where('(a.state IN (0, 1))');
-    }
-    
+
+		// Filter by published state
+		$published = $this->getState('filter.state');
+		if (is_numeric($published)) {
+			$query->where('a.state = ' . (int) $published);
+		} else if ($published === '') {
+			$query->where('(a.state IN (0, 1))');
+		}
 
         // Filter by search in title
         $search = $this->getState('filter.search');
